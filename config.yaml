@@ -1,0 +1,179 @@
+meta:
+  engine: 4.1.0
+  author: CABeale
+  boardName: BadWings
+units:
+  px: cx + 2
+  py: cy + 2
+
+  pushX: (cx/2)
+  pushY: (cy/2)
+
+  padX: pushX + 2
+  padY: pushY + 2
+
+  pad: 2
+
+  spacing: 0.75
+
+  controllerW: 18.5
+  controllerH: 33.5
+  belowControllerH: 17
+  caseBorder: 1.5
+  screwThreadRad: 0.5
+  screwPCBRad: 4.0
+points:
+  key:
+    padding: cy + spacing
+    spread: cx + spacing
+  zones:
+    #FINGERS
+    fingers:
+      rotate: 20
+      columns:
+        pinky:
+        ring:
+          key.stagger: 0.6u
+          key.splay: -12
+          key.origin: [-10, -17]
+        middle:
+          key.stagger: 0.2u
+          key.splay: -10
+          key.origin: [-10, -17]
+        index:
+          key.stagger: -0.4u
+          key.splay: -15
+          key.origin: [-10, -5]
+        right:
+          key.stagger: -0.55u
+      rows:
+        bottom:
+        home:
+        top:
+      mirror:
+        ref: fingers_right_top
+        distance: 105
+    #ROLLER/ROTARY
+    roller:
+      anchor:
+        ref: fingers_index_top
+        # shift: [46, -32]
+        shift: [44, -36]
+        # rotate: 30
+        rotate: -6
+      #ROLLER MIRROR
+      mirror:
+        ref: roller
+        distance: 70
+    #THUMBS
+    thumbfan:
+      anchor:
+        ref: fingers_index_bottom
+        shift: [16, -30]
+      columns:
+        left:
+          rows.bottom.width: 1.25u
+          rows.top.skip: true
+          key.splay: -3
+        middle:
+          rows.top.height: 1.25u
+          key.stagger: -0.80u
+          key.padding: 1.2u
+          key.splay: -3
+          key.spread: 22 #Fix for origin not shifting key away from left col
+        right:
+          rows.top.height: 1.25u
+          key.stagger: -0.40u
+          key.padding: 1.2u
+          key.splay: -3
+          key.spread: 20
+      rows:
+        bottom:
+        top:
+          key.middle.height: 1.25u
+      #THUMB MIRROR
+      mirror:
+        ref: thumbfan_right_top
+        distance: 60
+
+outlines:
+  keys:
+    - what: rectangle
+      where: true
+      size: [14, 14]
+  board_left:
+    # Here to help trace the outline of the actual keys
+    # without this the polygon would have been a total shot in the dark
+    - where: true
+      operation: stack
+      what: rectangle
+      size: [cx + 2, cy + 2]
+
+    - what: polygon
+      operation: stack
+      points:
+        #FINGERS
+        #pinky top
+        - ref: fingers_pinky_top
+          shift: [-padX, padY]
+        - ref: fingers_pinky_top
+          shift: [padX, padY]
+        #ring top
+        - ref: fingers_ring_top
+          shift: [-padX, padY]
+        - ref: fingers_ring_top
+          shift: [padX, padY]
+        #middle top
+        - ref: fingers_middle_top
+          shift: [-padX, padY]
+        - ref: fingers_middle_top
+          shift: [padX, padY]
+        #index top
+        - ref: fingers_index_top
+          shift: [-padX, padY]
+        - ref: fingers_index_top
+          shift: [padX, padY]
+        #right top
+        - ref: fingers_right_top
+          shift: [-padX + 3.5, padY + 0.5]
+        - ref: fingers_right_top
+          shift: [padX, padY]
+        #ROLLER/ROTARY
+        - ref: roller
+          shift: [-padX, padY]
+        - ref: roller
+          shift: [padX, padY]
+        #THUMBS
+        #if !roller
+        # - ref: thumbfan_middle_top
+        #   shift: [-padX, padY]
+        # - ref: thumbfan_middle_top
+        #   shift: [padX, padY]
+        #
+        - ref: thumbfan_right_top
+          shift: [-padX + 2, padY]
+        - ref: thumbfan_right_top
+          shift: [padX, padY]
+        - ref: thumbfan_right_bottom
+          shift: [padX, -padY]
+        - ref: thumbfan_right_bottom
+          shift: [-padX, -padY]
+        - ref: thumbfan_middle_bottom
+          shift: [-padX, -padY]
+        - ref: thumbfan_left_bottom
+          shift: [padX - 6, -padY]
+        - ref: thumbfan_left_bottom
+          shift: [-padX, -padY]
+        - ref: fingers_index_bottom
+          shift: [0, -padY]
+        - ref: fingers_index_bottom
+          shift: [-padX, -padY]
+        - ref: fingers_ring_bottom
+          shift: [padX, -padY]
+        # - ref: fingers_ring_bottom
+        #   shift: [-padX + 2, -padY]
+        - ref: fingers_pinky_bottom
+          shift: [padX, -padY]
+        - ref: fingers_pinky_bottom
+          shift: [-padX, -padY]
+      fillet: 2
