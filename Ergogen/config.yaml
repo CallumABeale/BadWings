@@ -396,7 +396,7 @@ pcbs:
         adjust:
           shift: [-7.3, 0]
           # rotate: 90
-          rotate: -90
+          # rotate: -90
 
       # CONTROLLER
       nice_nano:
@@ -429,28 +429,26 @@ pcbs:
         adjust:
           shift: [0, 5]
 
-      #TODO - Find alternative location because of encoder placement (this will give room for the reset/pwr btns)
-      # BATTERY JACK
+      # BATTERY JACK - Central postion due to size of battery
       jstph:
         what: jstph
         where:
-          ref: fingers_inner_bottom
-          shift: [2.2kx, 2]
-          rotate: -90
+          ref: fingers_index_bottom
+          shift: [-0.3kx, -0.75ky]
+          rotate: 90
         params:
           side: B
           pos: pos
           neg: GND
 
-      #TODO - Wrong placement because of 1.25u keycap!
       # ENCODER
       encoder:
         # what: rotary_encoder_ec11_ec12
         what: rotary
         where:
-          ref: thumbfan_right_top
-          rotate: 90
-          shift: [1px - 3.5, 0.15py]
+          ref: fingers_inner_bottom
+          rotate: 180
+          shift: [2px, -0.15py]
         params:
           from: P009 # Push button (S1 - RevXL ref)
           to: P010 # Push button (S2 RevXL ref)
@@ -460,13 +458,16 @@ pcbs:
 
       # ENCODER - Diode
       encoder_diode:
-        what: diode
+        # what: diode
+        what: diode_tht_sod123
         where:
-          ref: thumbfan_right_top
-          shift: [1px - 3, 0.65py]
+          ref: fingers_inner_bottom
+          shift: [1.5px, -0.15py]
         params:
           from: endiode
           to: row4
+        adjust:
+          rotate: 90
 
       # RESET SWITCH
       # horizontal_reset:
@@ -501,12 +502,13 @@ pcbs:
         what: mountinghole
         where:
           ref.aggregate.parts: [fingers_index_top, fingers_inner_home]
+          shift: [-2, 0] #Shift slightly to fit battery
 
       hole_far_right:
         what: mountinghole
         where:
           ref: fingers_inner_bottom
-          shift: [2.6kx, 2]
+          shift: [2.6kx, -0.8ky]
 
       hole_center:
         what: mountinghole

@@ -36,7 +36,7 @@ module.exports = {
   },
   body: p => {
     const standard = `
-      (module nice_nano (layer F.Cu) (tedit 6058B206)
+      (module nice_nano (layer B.Cu) (tedit 6058B206)
       ${p.at /* parametric position */}
 
       ${'' /* footprint reference */}
