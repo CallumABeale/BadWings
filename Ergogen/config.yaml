@@ -29,7 +29,7 @@ points:
     fingers:
       # Fix placement on KiCAD Sheet
       anchor:
-        shift: [100, -200]
+        shift: [0, -200]
       rotate: 23
       key:
         padding: 1ky
@@ -537,7 +537,6 @@ pcbs:
 
       # ENCODER
       encoder:
-        # what: rotary_encoder_ec11_ec12
         what: rotary
         where:
           ref: fingers_inner_bottom
@@ -552,11 +551,9 @@ pcbs:
 
       # ENCODER Diode
       encoder_diode:
-        # what: diode
         what: diode_tht_sod123
         where:
           ref: fingers_inner_bottom
-          # shift: [1.5px, -0.15py]
           shift: [1.55px, -2]
         params:
           from: endiode
@@ -576,163 +573,267 @@ pcbs:
       # MOUNTING HOLES
       hole_bottom_right:
         what: mountinghole
-        # what: mountingholem2
         where:
           ref.aggregate.parts: [thumbfan_middle_top, thumbfan_right_bottom]
 
       hole_bottom_left:
         what: mountinghole
-        # what: mountingholem2
         where:
           ref.aggregate.parts: [fingers_pinky_bottom, fingers_ring_bottom]
           shift: [0.25kx, -0.45ky]
 
       hole_top_left:
         what: mountinghole
-        # what: mountingholem2
         where:
           ref.aggregate.parts: [fingers_pinky_top, fingers_ring_top]
 
       hole_top_right:
         what: mountinghole
-        # what: mountingholem2
         where:
           ref.aggregate.parts: [fingers_index_top, fingers_inner_home]
           shift: [-2, 0] #Shift slightly to fit battery
 
       hole_far_right:
         what: mountinghole
-        # what: mountingholem2
         where:
           ref: fingers_inner_bottom
           shift: [2.6kx, -0.8ky]
 
       hole_center:
         what: mountinghole
-        # what: mountingholem2
         where:
           ref.aggregate.parts: [fingers_index_home, fingers_index_bottom]
           shift: [-0.5kx, 0]
 
       # Write "Bad Wings" on the PCB
-      # front_text: &text
-      #   what: text
-      #   where: &textWhere
-      #     ref: fingers_index_bottom
-      #     shift: [-8.7, -5.5]
-      #   params: &textParams
-      #     text: BadWings
-      #     justify: left
-      #     style: italic
-      #     h_size: 3.0
-      #     v_size: 3.0
-      #     thickness: 0.4
+      front_text: &text
+        what: text
+        where: &textWhere
+          ref: fingers_index_bottom
+          shift: [0, -12.3]
+        params: &textParams
+          text: BadWings
+          justify: left
+          style: italic
+          h_size: 3.0
+          v_size: 3.0
+          thickness: 0.4
 
-  # badWingsRight:
-  #   outlines:
-  #     main:
-  #       outline: board_right
-  #   footprints:
-  #     choc_hotswap:
-  #       what: choc
-  #       where: /^mirror_fingers_.*/
-  #       params:
-  #         keycaps: true
-  #         reverse: false
-  #         hotswap: true
-  #         from: "{{column_net}}"
-  #         to: "{{colrow}}"
-  #       adjust:
-  #         # Rotate the key switches upside-down
-  #         rotate: 180
+  badWingsRight:
+    outlines:
+      main:
+        outline: board_right
+    footprints:
+      choc_hotswap:
+        what: choc
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*/
+        params:
+          keycaps: true
+          reverse: false # Top side only
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+        adjust:
+          rotate: 180 # Rotate the key switches upside-down
 
-  #     # DIODE - FINGERS
-  #     diode_main:
-  #       what: diode
-  #       where: /^mirror_fingers_.*/
-  #       params:
-  #         from: "{{colrow}}"
-  #         to: "{{row_net}}"
-  #       adjust:
-  #         shift: [-7.8, -3.5]
-  #         rotate: 90
+      # DIODE
+      diode_main:
+        what: diode_tht_sod123
+        # what: diode
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*/
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [8, 0.8]
+          rotate: -90
 
-  #     # DIODE - THUMBS
-  #     diode_thumbs:
-  #       what: diode
-  #       where: /^mirror_thumbfan_.*/
-  #       params:
-  #         from: "{{colrow}}"
-  #         to: "{{row_net}}"
-  #       adjust:
-  #         shift: [-7.8, -3.5]
-  #         rotate: -90
+      # DIODE VIAS
+      via_main:
+        what: via
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*/
+        params:
+          net: "{{row_net}}"
+        adjust:
+          shift: [8, 3.6]
 
-  #     # CONTROLLER
-  #     nice_nano:
-  #       what: nice_nano
-  #       params:
-  #         orientation: down
-  #       where:
-  #         ref: mirror_fingers_inner_top
-  #         shift: [-21, -9.5]
-  #         rotate: -90
+      # CONTROLLER
+      nice_nano:
+        what: nice_nano
+        params:
+          orientation: down
+        where:
+          ref: mirror_fingers_inner_top
+          shift: [21, -9.5]
+          rotate: 90
 
-  #     # BATTERY JACK
-  #     jstph:
-  #       what: jstph
-  #       where:
-  #         ref: mirror_fingers_inner_home
-  #         shift: [-7, 5.7]
-  #         rotate: -90
-  #       params:
-  #         side: B
-  #         pos: pos
-  #         neg: GND
+      nice_view:
+        what: nice_view
+        params:
+          SDA: P017
+          SCL: P020
+          CS: P006
+        where:
+          ref: mirror_fingers_inner_top
+          shift: [21, -30]
+          rotate: -90
 
-  #     # ENCODER
-  #     encoder:
-  #       what: rotary_encoder_ec11_ec12
-  #       where:
-  #         ref: mirror_rotary_rotaryCol_rotaryRow
+      # LEDs
+      per_key_leds:
+        what: led_sk6812mini-e
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*|^mirror_controller_(?!(?:controllerCol_controllerRow))|^mirror_rotary_(?!(?:rotaryCol_rotaryRow))/
+        params:
+          P2: "{{key.led_next}}" #DOUT
+          P4: "{{key.led_prev}}" #DIN
+        adjust:
+          shift: [0, 5]
+          rotate: 180
 
-  #     # ENDODER - Diode
-  #     # encoder_diode:
-  #     #   what: diode
-  #     #   where:
-  #     #     ref: mirror_rotary_rotaryCol_rotaryRow
-  #     #   params:
-  #     #     from: endiode
-  #     #     to: row4
+      # LED VCC VIAS
+      led_vcc_vias:
+        what: via
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*|^mirror_controller_(?!(?:controllerCol_controllerRow))|^mirror_rotary_(?!(?:rotaryCol_rotaryRow))/
+        params.net: VCC
+        adjust:
+          shift: [4.2, 5.7]
 
-  #     # PLACEHOLDER STUFF FOR LATER
-  #     # LEDS
-  #     # sk6813:
-  #     #   what: led_sk6812mini-e
-  #     #   where: true
-  #     #   params:
-  #     #     # TODO: Change P to appropriate PIN on controller
-  #     #     P2: "{{key.led_next}}" #DOUT
-  #     #     P4: "{{key.led_prev}}" #DIN
-  #     #   adjust:
-  #     #     shift: [0, 5]
-  #     #     rotate: 0
-  #     # Encoder
-  #     # TODO: Encoder may need its own pins on the MC
-  #     # encoder:
-  #     #   what: rotary_encoder_ec11_ec12
-  #     #   params:
-  #     #     S1: col5
-  #     #     S2: endiode
-  #     #     A: rotA
-  #     #     B: GND
-  #     #     c: rotB
-  #     #   where:
-  #     #     - ref: rotary_rotaryCol_rotaryRow
-  #     # encoder_diode:
-  #     #   # TODO: what is this diode?
-  #     #   what: diode_tht_sod123
-  #     #   where:
-  #     #     - ref: rotary_rotaryCol_rotaryRow
-  #     #       # TODO: Find the right place for this
-  #     #       shift: [0, -5]
+      # LED GND VIAS
+      led_gnd_vias:
+        what: via
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*|^mirror_controller_(?!(?:controllerCol_controllerRow))|^mirror_rotary_(?!(?:rotaryCol_rotaryRow))/
+        params.net: GND
+        adjust:
+          shift: [-4.2, 4.3]
+
+      # BATTERY JACK
+      jstph:
+        what: jstph
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [2.38kx, -0.8ky]
+          rotate: -90
+        params:
+          side: B
+          pos: pos
+          neg: GND
+
+      # RESET BUTTON
+      horizontal_reset:
+        what: EVQPUC
+        params:
+          side: B
+          from: GND
+          to: RST
+        where:
+          ref: mirror_fingers_inner_top
+          shift: [-1.9kx, 0]
+          rotate: -90
+
+      # ON/OFF SWITCH
+      battery_switch:
+        what: slider
+        where:
+          ref: mirror_fingers_inner_home
+          shift: [-1.91kx, 0]
+          rotate: -90
+        params:
+          side: B
+          from: pos
+          to: RAW
+
+      # ON/OFF SWITCH VIA
+      slider_via:
+        what: via
+        where:
+          ref: mirror_fingers_inner_home
+          shift: [-1.72kx, -0.8]
+        params:
+          net: RAW
+
+      # ENCODER
+      encoder:
+        what: rotary
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [2px, -0.15py]
+        params:
+          from: P002 # Push button (S1 - RevXL ref)
+          to: endiode # Push button (S2 RevXL ref)
+          A: P011 # Rotary
+          B: GND
+          C: P100 # Rotary
+
+      # ENCODER Diode
+      encoder_diode:
+        what: diode_tht_sod123
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [-1.55px, -2]
+        params:
+          from: endiode
+          to: P010
+        adjust:
+          rotate: 90
+
+      # ENCODER - Diode Via
+      encoder_via:
+        what: via
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [-1.55px, -5]
+        params:
+          net: P010
+
+      # MOUNTING HOLES
+      hole_bottom_left:
+        what: mountinghole
+        where:
+          ref.aggregate.parts:
+            [mirror_thumbfan_middle_top, mirror_thumbfan_right_bottom]
+
+      hole_bottom_right:
+        what: mountinghole
+        where:
+          ref.aggregate.parts:
+            [mirror_fingers_pinky_bottom, mirror_fingers_ring_bottom]
+          shift: [-0.25kx, -0.45ky]
+
+      hole_top_right:
+        what: mountinghole
+        where:
+          ref.aggregate.parts:
+            [mirror_fingers_pinky_top, mirror_fingers_ring_top]
+
+      hole_top_left:
+        what: mountinghole
+        where:
+          ref.aggregate.parts:
+            [mirror_fingers_index_top, mirror_fingers_inner_home]
+          shift: [2, 0] #Shift slightly to fit battery
+
+      hole_far_left:
+        what: mountinghole
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [2.6kx, -0.8ky]
+
+      hole_center:
+        what: mountinghole
+        where:
+          ref.aggregate.parts:
+            [mirror_fingers_index_home, mirror_fingers_index_bottom]
+          shift: [0.5kx, 0]
+
+      # Write "Bad Wings" on the PCB
+      front_text: &text
+        what: text
+        where: &textWhere
+          ref: mirror_fingers_index_bottom
+          shift: [0, -12.3]
+        params: &textParams
+          text: BadWings
+          justify: right
+          style: italic
+          h_size: 3.0
+          v_size: 3.0
+          thickness: 0.4
