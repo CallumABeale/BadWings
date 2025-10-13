@@ -1,0 +1,21 @@
+LF PINS
+P1.04 (C1)
+P1.06 (C2)
+P0.31 (C3)
+P0.29 (C4)
+P0.02 (C5 & ENCODER)
+P1.15 (R1)
+P1.13 (R2)
+P1.11 (R3)
+P0.10 (R4 & ENCODER DIODE)
+P0.09 (R5)
+
+HF PINS
+P0.06 (CS (nice!view))
+P0.08
+P0.17 (MOSI (nice!view))
+P0.20 (SCL (nice!view))
+P0.22
+P0.24 (LEDIN)
+P1.00 (ROTA)
+P0.11 (ROTB)

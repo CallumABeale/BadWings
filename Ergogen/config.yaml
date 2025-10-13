@@ -24,7 +24,6 @@ units:
   rotaryW: 11.7
   rotaryH: 12
 
-# TODO Change all key pins to use LF rather than HF to allow for room for LEDs
 points:
   zones:
     fingers:
@@ -37,32 +36,61 @@ points:
         spread: 1kx
       columns:
         pinky:
-          key.column_net: P020
+          key.column_net: P104
+          rows.bottom.key.led_prev: LED17
+          rows.bottom.key.led_next: LED18
+          rows.home.key.led_prev: LED18
+          rows.home.key.led_next: LED19
+          rows.top.key.led_prev: LED19
+          rows.top.key.led_next: LEDEND
         ring:
           key.stagger: 0.6kx
           key.splay: -12
           key.origin: [0, -17]
-          key.column_net: P022
+          key.column_net: P106
+          rows.top.key.led_prev: LED14
+          rows.top.key.led_next: LED15
+          rows.home.key.led_prev: LED15
+          rows.home.key.led_next: LED16
+          rows.bottom.key.led_prev: LED16
+          rows.bottom.key.led_next: LED17
         middle:
           key.stagger: 0.35kx
           key.splay: -7
           key.origin: [-10, -17]
-          key.column_net: P024
+          key.column_net: P031
+          rows.bottom.key.led_prev: LED11
+          rows.bottom.key.led_next: LED12
+          rows.home.key.led_prev: LED12
+          rows.home.key.led_next: LED13
+          rows.top.key.led_prev: LED13
+          rows.top.key.led_next: LED14
         index:
           key.stagger: -0.4kx
           key.splay: -4
           key.origin: [-10, -16]
-          key.column_net: P100
+          key.column_net: P029
+          rows.top.key.led_prev: LED8
+          rows.top.key.led_next: LED9
+          rows.home.key.led_prev: LED9
+          rows.home.key.led_next: LED10
+          rows.bottom.key.led_prev: LED10
+          rows.bottom.key.led_next: LED11
         inner:
-          # key.stagger: -0.1kx
-          key.column_net: P011
+          key.column_net: P002
+          rows.bottom.key.led_prev: LED5
+          rows.bottom.key.led_next: LED6
+          rows.home.key.led_prev: LED6
+          rows.home.key.led_next: LED7
+          rows.top.key.led_prev: LED7
+          rows.top.key.led_next: LED8
       rows:
         bottom:
-          row_net: P002
+          row_net: P111
         home:
-          row_net: P029
+          row_net: P113
         top:
-          row_net: P031
+          row_net: P115
     thumbfan:
       anchor:
         ref: fingers_index_bottom
@@ -74,29 +102,39 @@ points:
         left:
           rows.bottom.width: 1.25kx
           rows.top.skip: true
+          rows.bottom.key.led_prev: LED4
+          rows.bottom.key.led_next: LED5
           key.splay: -15
-          key.column_net: P024
+          key.column_net: P013
         middle:
           rows.top.width: 1.25ky
           rows.top.rotate: 90
+          rows.top.key.led_prev: P024
+          rows.top.key.led_next: LED1
+          rows.bottom.key.led_prev: LED3
+          rows.bottom.key.led_next: LED4
           key.stagger: -0.45ky
           key.padding: 1.2ky
           key.splay: -2
           key.spread: 22
-          key.column_net: P100
+          key.column_net: P029
         right:
           rows.top.width: 1.25ky
           rows.top.rotate: 90
+          rows.top.key.led_prev: LED1
+          rows.top.key.led_next: LED2
+          rows.bottom.key.led_prev: LED2
+          rows.bottom.key.led_next: LED3
           key.stagger: -0.2ky
           key.padding: 1.2ky
           key.splay: -2
           key.spread: 19
-          key.column_net: P011
+          key.column_net: P002
       rows:
         bottom:
-          row_net: P113
+          row_net: P009
         top:
-          row_net: P115
+          row_net: P010
     rotary:
       # This needs to be an EC11 rotary encoder
       anchor:
@@ -105,10 +143,9 @@ points:
       columns:
         rotaryCol:
           key:
-            key.column_net: P017
       rows:
         rotaryRow:
-          row_net: P002
+
     # NICE!NANO - used for layout testing
     controller:
       anchor:
@@ -210,11 +247,11 @@ outlines:
         #CONTROLLER
         - ref: fingers_inner_top
           # shift: [padX + controllerW, padY]
-          shift: [0.7px + controllerW, 0.5py]
+          shift: [0.9px + controllerW, 0.5py]
         #ROTARY
         - ref: rotary_rotaryCol_rotaryRow
           # shift: [-padX, padY]
-          shift: [-0.35px, 0.5py]
+          shift: [-3.5, 0.5py]
         - ref: rotary_rotaryCol_rotaryRow
           # shift: [padX, padY]
           shift: [0.5px, 0.5py]
@@ -382,21 +419,28 @@ pcbs:
           from: "{{column_net}}"
           to: "{{colrow}}"
         adjust:
-          # Rotate the key switches upside-down
-          rotate: 180
+          rotate: 180 # Rotate the key switches upside-down
 
       # DIODE
       diode_main:
-        # what: diode
         what: diode_tht_sod123
+        # what: diode
         where: /^fingers_.*|^thumbfan_.*/
         params:
           from: "{{colrow}}"
           to: "{{row_net}}"
         adjust:
-          shift: [-7.3, 0]
-          # rotate: 90
-          # rotate: -90
+          shift: [-8, 0.8]
+          rotate: -90
+
+      # DIODE VIAS
+      via_main:
+        what: via
+        where: /^fingers_.*|^thumbfan_.*/
+        params:
+          net: "{{row_net}}"
+        adjust:
+          shift: [-8, 3.6]
 
       # CONTROLLER
       nice_nano:
@@ -428,18 +472,68 @@ pcbs:
           P4: "{{key.led_prev}}" #DIN
         adjust:
           shift: [0, 5]
+          rotate: 180
 
-      # BATTERY JACK - Central postion due to size of battery
+      # LED VCC VIAS
+      led_vcc_vias:
+        what: via
+        where: /^fingers_.*|^thumbfan_.*|^controller_(?!(?:controllerCol_controllerRow))|^rotary_(?!(?:rotaryCol_rotaryRow))/
+        params.net: VCC
+        adjust:
+          shift: [-4.2, 5.7]
+
+      # LED GND VIAS
+      led_gnd_vias:
+        what: via
+        where: /^fingers_.*|^thumbfan_.*|^controller_(?!(?:controllerCol_controllerRow))|^rotary_(?!(?:rotaryCol_rotaryRow))/
+        params.net: GND
+        adjust:
+          shift: [4.2, 4.3]
+
+      # BATTERY JACK
       jstph:
         what: jstph
         where:
-          ref: fingers_index_bottom
-          shift: [-0.3kx, -0.75ky]
-          rotate: 90
+          ref: fingers_inner_bottom
+          shift: [2.38kx, -0.8ky]
+          rotate: -90
         params:
           side: B
           pos: pos
           neg: GND
+
+      # RESET BUTTON
+      horizontal_reset:
+        what: EVQPUC
+        params:
+          side: B
+          from: GND
+          to: RST
+        where:
+          ref: fingers_inner_top
+          shift: [1.9kx, 0]
+          rotate: -90
+
+      # ON/OFF SWITCH
+      battery_switch:
+        what: slider
+        where:
+          ref: fingers_inner_home
+          shift: [1.91kx, 0]
+          rotate: -90
+        params:
+          side: B
+          from: pos
+          to: RAW
+
+      # ON/OFF SWITCH VIA
+      slider_via:
+        what: via
+        where:
+          ref: fingers_inner_home
+          shift: [1.72kx, -0.8]
+        params:
+          net: RAW
 
       # ENCODER
       encoder:
@@ -450,68 +544,72 @@ pcbs:
           rotate: 180
           shift: [2px, -0.15py]
         params:
-          from: P009 # Push button (S1 - RevXL ref)
-          to: P010 # Push button (S2 RevXL ref)
-          A: P111 # Rotary
+          from: P002 # Push button (S1 - RevXL ref)
+          to: endiode # Push button (S2 RevXL ref)
+          A: P011 # Rotary
           B: GND
-          C: P113 # Rotary
+          C: P100 # Rotary
 
-      # ENCODER - Diode
+      # ENCODER Diode
       encoder_diode:
         # what: diode
         what: diode_tht_sod123
         where:
           ref: fingers_inner_bottom
-          shift: [1.5px, -0.15py]
+          # shift: [1.5px, -0.15py]
+          shift: [1.55px, -2]
         params:
           from: endiode
-          to: row4
+          to: P010
         adjust:
           rotate: 90
 
-      # RESET SWITCH
-      # horizontal_reset:
-      #   what: EVQPUC
-      #   params:
-      #     side: B
-      #     from: GND
-      #     to: RST
-      #   where:
-      #     ref: fingers_inner_top
-      #     shift: [9.0, 2.8]
-      #     rotate: -90
+      # ENCODER - Diode Via
+      encoder_via:
+        what: via
+        where:
+          ref: fingers_inner_bottom
+          shift: [1.55px, -5]
+        params:
+          net: P010
 
       # MOUNTING HOLES
       hole_bottom_right:
         what: mountinghole
+        # what: mountingholem2
         where:
           ref.aggregate.parts: [thumbfan_middle_top, thumbfan_right_bottom]
 
       hole_bottom_left:
         what: mountinghole
+        # what: mountingholem2
         where:
           ref.aggregate.parts: [fingers_pinky_bottom, fingers_ring_bottom]
           shift: [0.25kx, -0.45ky]
 
       hole_top_left:
         what: mountinghole
+        # what: mountingholem2
         where:
           ref.aggregate.parts: [fingers_pinky_top, fingers_ring_top]
 
       hole_top_right:
         what: mountinghole
+        # what: mountingholem2
         where:
           ref.aggregate.parts: [fingers_index_top, fingers_inner_home]
           shift: [-2, 0] #Shift slightly to fit battery
 
       hole_far_right:
         what: mountinghole
+        # what: mountingholem2
         where:
           ref: fingers_inner_bottom
           shift: [2.6kx, -0.8ky]
 
       hole_center:
         what: mountinghole
+        # what: mountingholem2
         where:
           ref.aggregate.parts: [fingers_index_home, fingers_index_bottom]
           shift: [-0.5kx, 0]
