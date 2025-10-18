@@ -680,7 +680,7 @@ pcbs:
           to: "{{row_net}}"
         adjust:
           shift: [8, 0.8]
-          rotate: -90
+          rotate: 90
 
       # DIODE VIAS
       via_main:
