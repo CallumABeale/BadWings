@@ -1,0 +1,1068 @@
+meta:
+  author: CABeale
+  boardName: BadWings
+units:
+  kx: cx
+  ky: cy
+
+  px: kx + 4
+  py: ky + 4
+
+  dpx: kx + 8
+  dpy: ky + 8
+
+  pushX: (kx/2)
+  pushY: (ky/2)
+
+  padX: pushX + 2
+  padY: pushY + 2
+
+  caseBorder: 1.5
+  screwSize: 1
+  standoffSize: 2.5
+
+  # nice!nano dimensions
+  controllerW: 18.5
+  controllerH: 33.5
+  # nice!view dimensions
+  nice_viewW: 14
+  nice_viewH: 36
+  # EC11 rotary dimensions
+  rotaryW: 11.7
+  rotaryH: 12
+
+points:
+  zones:
+    fingers:
+      # Fix placement on KiCAD Sheet
+      anchor:
+        shift: [0, -200]
+      rotate: 23
+      key:
+        padding: 1ky
+        spread: 1kx
+      columns:
+        pinky:
+          key.column_net: P104 #C1
+          rows.bottom.key.led_prev: LED9
+          rows.bottom.key.led_next: LED10
+          rows.home.key.led_prev: LED10
+          rows.home.key.led_next: LED11
+          rows.top.key.led_prev: LED19
+          rows.top.key.led_next: LEDEND
+        ring:
+          key.stagger: 0.6kx
+          key.splay: -12
+          key.origin: [0, -17]
+          key.column_net: P106 #C2
+          rows.bottom.key.led_prev: LED8
+          rows.bottom.key.led_next: LED9
+          rows.home.key.led_prev: LED11
+          rows.home.key.led_next: LED12
+          rows.top.key.led_prev: LED18
+          rows.top.key.led_next: LED19
+        middle:
+          key.stagger: 0.35kx
+          key.splay: -7
+          key.origin: [-10, -17]
+          key.column_net: P031 #C3
+          rows.bottom.key.led_prev: LED7
+          rows.bottom.key.led_next: LED8
+          rows.home.key.led_prev: LED12
+          rows.home.key.led_next: LED13
+          rows.top.key.led_prev: LED17
+          rows.top.key.led_next: LED18
+        index:
+          key.stagger: -0.4kx
+          key.splay: -4
+          key.origin: [-10, -16]
+          key.column_net: P029 #C4
+          rows.bottom.key.led_prev: LED6
+          rows.bottom.key.led_next: LED7
+          rows.home.key.led_prev: LED13
+          rows.home.key.led_next: LED14
+          rows.top.key.led_prev: LED16
+          rows.top.key.led_next: LED17
+        inner:
+          key.column_net: P002 #C5
+          rows.bottom.key.led_prev: LED5
+          rows.bottom.key.led_next: LED6
+          rows.home.key.led_prev: LED14
+          rows.home.key.led_next: LED15
+          rows.top.key.led_prev: LED15
+          rows.top.key.led_next: LED16
+      rows:
+        bottom:
+          row_net: P111 #R3
+        home:
+          row_net: P113 #R2
+        top:
+          row_net: P115 #R1
+    thumbfan:
+      anchor:
+        ref: fingers_index_bottom
+        shift: [0.55kx, -1.5ky]
+      key:
+        padding: 1ky
+        spread: 1kx
+      columns:
+        left:
+          rows.bottom.width: 1.25kx
+          rows.top.skip: true
+          rows.bottom.key.led_prev: LED4
+          rows.bottom.key.led_next: LED5
+          key.splay: -15
+          key.column_net: P104 #C1
+        center:
+          rows.top.width: 1.25ky
+          rows.top.rotate: 90
+          rows.top.key.led_prev: P024
+          rows.top.key.led_next: LED1
+          rows.bottom.key.led_prev: LED3
+          rows.bottom.key.led_next: LED4
+          key.stagger: -0.45ky
+          key.padding: 1.2ky
+          key.splay: -2
+          key.spread: 22
+          key.column_net: P106 #C2
+        right:
+          rows.top.width: 1.25ky
+          rows.top.rotate: 90
+          rows.top.key.led_prev: LED1
+          rows.top.key.led_next: LED2
+          rows.bottom.key.led_prev: LED2
+          rows.bottom.key.led_next: LED3
+          key.stagger: -0.2ky
+          key.padding: 1.2ky
+          key.splay: -2
+          key.spread: 19
+          key.column_net: P031 #C3
+      rows:
+        bottom:
+          row_net: P009 #R5
+        top:
+          row_net: P010 #R4
+    rotary:
+      # This needs to be an EC11 rotary encoder
+      anchor:
+        ref: fingers_inner_bottom
+        shift: [2kx +4, -4]
+      columns:
+        rotaryCol:
+          key:
+      rows:
+        rotaryRow:
+
+    # NICE!NANO - used for layout testing
+    # controller:
+    #   anchor:
+    #     ref: fingers_inner_top
+    #     shift: [20, -11]
+    #   columns:
+    #     controllerCol:
+    #       rows.controllerRow.height: controllerH
+    #       rows.controllerRow.width: controllerW
+    #   rows:
+    #     controllerRow:
+
+    # NICE!VIEW - used for layout testing
+    # nice_view:
+    #   anchor:
+    #     ref: fingers_inner_top
+    #     shift: [20, -13]
+    #   columns:
+    #     nice_viewCol:
+    #       rows.nice_viewRow.height: nice_viewH
+    #       rows.nice_viewRow.width: nice_viewW
+    #   rows:
+    #     nice_viewRow:
+
+    # BATTERY - used for layout testing
+    # battery:
+    #   anchor:
+    #     ref: fingers_inner_top
+    #     shift: [-kx, -ky]
+    #     rotate: 90
+    #   #PLACEMENT: Battery goes underneath the board
+    #   columns:
+    #     batteryC:
+    #       rows.batteryR.height: batteryH
+    #       rows.batteryR.width: batteryW
+    #   rows:
+    #     batteryR:
+  mirror: &mirror
+    ref: fingers_inner_top
+    distance: 6kx
+
+outlines:
+  raw:
+    - what: rectangle
+      where: true
+      size: [px, py]
+  keys:
+    - what: rectangle
+      where: true
+      size: [kx - 0.5, ky - 0.5]
+  board_left:
+    # Here to help trace the outline of the actual keys
+    # without this the polygon would have been a total shot in the dark
+    # - where: true
+    #   operation: stack
+    #   what: rectangle
+    #   size: [kx, ky]
+
+    - what: polygon
+
+      fillet: 2
+      points:
+        #FINGERS - top
+        #pinky
+        - ref: fingers_pinky_top
+          shift: [-padX, padY]
+        - ref: fingers_pinky_top
+          shift: [padX, padY]
+        #ring
+        - ref: fingers_ring_top
+          shift: [-padX, padY]
+        - ref: fingers_ring_top
+          shift: [padX, padY]
+        #middle
+        - ref: fingers_middle_top
+          shift: [-padX, padY]
+        - ref: fingers_middle_top
+          shift: [padX, padY]
+        #index
+        - ref: fingers_index_top
+          shift: [-padX / 2, padY]
+        - ref: fingers_index_top
+          shift: [padX, padY]
+        #inner
+        - ref: fingers_inner_top
+          shift: [-padX, padY]
+        - ref: fingers_inner_top
+          shift: [padX, padY]
+        #CONTROLLER
+        - ref: fingers_inner_top
+          shift: [padX * 1.7 + controllerW, padY]
+        #ROTARY
+        - ref: fingers_inner_bottom
+          shift: [padX * 1.7 + controllerW, padY - 5] # Check that this is vertical
+        - ref: rotary_rotaryCol_rotaryRow
+          shift: [padX, padY - 1]
+        - ref: rotary_rotaryCol_rotaryRow
+          shift: [padX, -padY]
+        #THUMBS
+        #top
+        - ref: thumbfan_right_top
+          shift: [padX, -padY]
+        #bottom
+        - ref: thumbfan_right_bottom
+          shift: [padX, -padY]
+        - ref: thumbfan_right_bottom
+          shift: [-padX, -padY]
+        - ref: thumbfan_center_bottom
+          shift: [-padX, -padY]
+        - ref: thumbfan_left_bottom
+          shift: [-padX, -padY]
+        # FINGERS - bottom
+        - ref: fingers_index_bottom
+          shift: [-padX, -padY]
+        - ref: fingers_ring_bottom
+          shift: [padX, -padY]
+        - ref: fingers_pinky_bottom
+          shift: [padX, -padY]
+        - ref: fingers_pinky_bottom
+          shift: [-padX, -padY]
+        #Connect back to top
+        - ref: fingers_pinky_top
+          shift: [-padX, padY]
+
+  combo_left:
+    - name: board_left
+    - operation: subtract
+      name: keys
+
+  board_right:
+    # Here to help trace the outline of the actual keys
+    # without this the polygon would have been a total shot in the dark
+    # - where: true
+    #   operation: stack
+    #   what: rectangle
+    #   size: [kx, ky]
+
+    - what: polygon
+      operation: stack
+      fillet: 2
+      points:
+        #FINGERS - top
+        #pinky
+        - ref: mirror_fingers_pinky_top
+          shift: [-padX, padY]
+        - ref: mirror_fingers_pinky_top
+          shift: [padX, padY]
+        #ring
+        - ref: mirror_fingers_ring_top
+          shift: [-padX, padY]
+        - ref: mirror_fingers_ring_top
+          shift: [padX, padY]
+        #middle
+        - ref: mirror_fingers_middle_top
+          shift: [-padX, padY]
+        - ref: mirror_fingers_middle_top
+          shift: [padX, padY]
+        #index
+        - ref: mirror_fingers_index_top
+          shift: [-padX / 2, padY]
+        - ref: mirror_fingers_index_top
+          shift: [padX, padY]
+        #inner
+        - ref: mirror_fingers_inner_top
+          shift: [-padX, padY]
+        - ref: mirror_fingers_inner_top
+          shift: [padX, padY]
+        #CONTROLLER
+        - ref: mirror_fingers_inner_top
+          shift: [padX * 1.7 + controllerW, padY]
+        #ROTARY
+        - ref: mirror_fingers_inner_bottom
+          shift: [padX * 1.7 + controllerW, padY - 5] # Check that this is vertical
+        - ref: mirror_rotary_rotaryCol_rotaryRow
+          shift: [padX, padY - 1]
+        - ref: mirror_rotary_rotaryCol_rotaryRow
+          shift: [padX, -padY]
+        #THUMBS
+        #top
+        - ref: mirror_thumbfan_right_top
+          shift: [padX, -padY]
+        #bottom
+        - ref: mirror_thumbfan_right_bottom
+          shift: [padX, -padY]
+        - ref: mirror_thumbfan_right_bottom
+          shift: [-padX, -padY]
+        - ref: mirror_thumbfan_center_bottom
+          shift: [-padX, -padY]
+        - ref: mirror_thumbfan_left_bottom
+          shift: [-padX, -padY]
+        # FINGERS - bottom
+        - ref: mirror_fingers_index_bottom
+          shift: [-padX, -padY]
+        - ref: mirror_fingers_ring_bottom
+          shift: [padX, -padY]
+        - ref: mirror_fingers_pinky_bottom
+          shift: [padX, -padY]
+        - ref: mirror_fingers_pinky_bottom
+          shift: [-padX, -padY]
+        #Connect back to first point
+        - ref: mirror_fingers_pinky_top
+          shift: [-padX, padY]
+
+  combo_right:
+    - name: board_right
+    - operation: subtract
+      name: keys
+
+  xl_board_left:
+    - what: polygon
+      operation: stack
+      fillet: 2
+      points:
+        #FINGERS - top
+        #pinky
+        - ref: fingers_pinky_top
+          shift: [-dpx, padY + caseBorder]
+        - ref: fingers_pinky_top
+          shift: [padX + caseBorder, padY + caseBorder]
+        #ring
+        - ref: fingers_ring_top
+          shift: [-padX - caseBorder, padY + caseBorder]
+        - ref: fingers_ring_top
+          shift: [padX + caseBorder, padY + caseBorder]
+        #middle
+        - ref: fingers_middle_top
+          shift: [-padX - caseBorder, padY + caseBorder]
+        - ref: fingers_middle_top
+          shift: [padX + caseBorder, padY + caseBorder]
+        #index
+        - ref: fingers_index_top
+          shift: [(-padX / 2) - caseBorder, padY + caseBorder]
+        - ref: fingers_index_top
+          shift: [padX + caseBorder, padY + caseBorder]
+        #inner
+        - ref: fingers_inner_top
+          shift: [-padX - caseBorder, padY + caseBorder]
+        - ref: fingers_inner_top
+          shift: [padX + caseBorder, padY + caseBorder]
+        #CONTROLLER
+        - ref: fingers_inner_top
+          shift: [padX * 1.6 + controllerW + caseBorder, padY + caseBorder]
+        #ROTARY
+        - ref: rotary_rotaryCol_rotaryRow
+          shift: [-padX / 3.2 + caseBorder, padY + caseBorder] # Check that this is vertical
+        - ref: rotary_rotaryCol_rotaryRow
+          shift: [padX + caseBorder, padY + caseBorder]
+        - ref: rotary_rotaryCol_rotaryRow
+          shift: [padX + caseBorder, -padY - caseBorder]
+        #THUMBS
+        #top
+        # - ref: thumbfan_right_top
+        #   shift: [padX, -padY]
+        #bottom
+        - ref: thumbfan_right_bottom
+          shift: [padX + caseBorder, -padY - caseBorder]
+        - ref: thumbfan_right_bottom
+          shift: [-padX - caseBorder, -padY - caseBorder]
+        - ref: thumbfan_center_bottom
+          shift: [-padX - caseBorder, -padY - caseBorder]
+        - ref: thumbfan_left_bottom
+          shift: [-padX - caseBorder, -padY - caseBorder]
+        # FINGERS - bottom
+        - ref: fingers_index_bottom
+          shift: [-padX - caseBorder, -padY - caseBorder]
+        - ref: fingers_ring_bottom
+          shift: [padX + caseBorder, -padY - caseBorder]
+        - ref: fingers_pinky_bottom
+          shift: [padX + caseBorder, -padY - caseBorder]
+        - ref: fingers_pinky_bottom
+          shift: [-padX - caseBorder, -padY - caseBorder]
+        #Connect back to top
+        - ref: fingers_pinky_top
+          shift: [-padX - caseBorder, padY + caseBorder]
+
+  xl_board_left_key_cutouts:
+    - name: xl_board_left
+    - operation: subtract
+      name: keys
+
+  xl_board_right:
+    - what: polygon
+      operation: stack
+      fillet: 2
+
+      points:
+        #FINGERS - top
+        #pinky
+        - ref: mirror_fingers_pinky_top
+          shift: [-padX - caseBorder, padY + caseBorder]
+        - ref: mirror_fingers_pinky_top
+          shift: [padX, padY]
+        #ring
+        - ref: mirror_fingers_ring_top
+          shift: [-padX, padY]
+        - ref: mirror_fingers_ring_top
+          shift: [padX, padY]
+        #middle
+        - ref: mirror_fingers_middle_top
+          shift: [-padX, padY]
+        - ref: mirror_fingers_middle_top
+          shift: [padX, padY]
+        #index
+        - ref: mirror_fingers_index_top
+          shift: [-padX / 2, padY]
+        - ref: mirror_fingers_index_top
+          shift: [padX, padY]
+        #inner
+        - ref: mirror_fingers_inner_top
+          shift: [-padX, padY]
+        - ref: mirror_fingers_inner_top
+          shift: [padX, padY]
+        #CONTROLLER
+        - ref: mirror_fingers_inner_top
+          shift: [padX * 1.6 + controllerW, padY]
+        #ROTARY
+        - ref: mirror_fingers_inner_bottom
+          shift: [padX * 1.7 + controllerW, padY - 5]
+        - ref: mirror_rotary_rotaryCol_rotaryRow
+          shift: [padX, padY - 1]
+        - ref: mirror_rotary_rotaryCol_rotaryRow
+          shift: [padX, -padY]
+        #THUMBS
+        #top
+        - ref: mirror_thumbfan_right_top
+          shift: [padX, -padY]
+        #bottom
+        - ref: mirror_thumbfan_right_bottom
+          shift: [padX, -padY]
+        - ref: mirror_thumbfan_right_bottom
+          shift: [-padX, -padY]
+        - ref: mirror_thumbfan_center_bottom
+          shift: [-padX, -padY]
+        - ref: mirror_thumbfan_left_bottom
+          shift: [-padX, -padY]
+        # FINGERS - bottom
+        - ref: mirror_fingers_index_bottom
+          shift: [-padX, -padY]
+        - ref: mirror_fingers_ring_bottom
+          shift: [padX, -padY]
+        - ref: mirror_fingers_pinky_bottom
+          shift: [padX, -padY]
+        - ref: mirror_fingers_pinky_bottom
+          shift: [-padX, -padY]
+        #Connect back to first point
+        - ref: mirror_fingers_pinky_top
+          shift: [-padX, padY]
+
+  xl_board_right_key_cutouts:
+    - name: xl_board_right
+    - operation: subtract
+      name: keys
+
+pcbs:
+  badWingsLeft:
+    template: kicad8
+    outlines:
+      main:
+        outline: board_left
+    footprints:
+      choc_hotswap:
+        what: choc
+        where: /^fingers_.*|^thumbfan_.*/
+        params:
+          keycaps: true
+          reverse: false # Top side only
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+        adjust:
+          rotate: 180 # Rotate the key switches upside-down
+
+      # DIODE
+      diode_main:
+        what: diode_tht_sod123
+        # what: diode
+        where: /^fingers_.*|^thumbfan_.*/
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [-8, 0.8]
+          rotate: -90
+
+      # DIODE VIAS
+      via_main:
+        what: via
+        where: /^fingers_.*|^thumbfan_.*/
+        params:
+          net: "{{row_net}}"
+        adjust:
+          shift: [-6.5, 2.45]
+
+      # CONTROLLER
+      nice_nano:
+        what: nice_nano
+        params:
+          orientation: down
+        where:
+          ref: fingers_inner_top
+          shift: [21, -9.5]
+          rotate: -90
+
+      nice_view:
+        what: nice_view
+        params:
+          SDA: P017
+          SCL: P020
+          CS: P006
+        where:
+          ref: fingers_inner_top
+          shift: [21, -30]
+          rotate: 90
+
+      # LEDs
+      per_key_leds:
+        what: led_sk6812mini-e
+        where: /^fingers_.*|^thumbfan_.*|^controller_(?!(?:controllerCol_controllerRow))|^rotary_(?!(?:rotaryCol_rotaryRow))/
+        params:
+          P2: "{{key.led_next}}" #DOUT
+          P4: "{{key.led_prev}}" #DIN
+        adjust:
+          shift: [0, 5]
+          rotate: 180
+
+      # LED NEXT VIAS
+      led_next_vias:
+        what: via
+        where: /^(?:fingers_(?!(?:pinky_top))|thumbfan_.*|controller_(?!(?:controllerCol_controllerRow))|rotary_(?!(?:rotaryCol_rotaryRow)))/
+        params.net: "{{key.led_next}}"
+        adjust:
+          shift: [-4.5, 4.3]
+
+      # LED PREV VIAS
+      led_prev_vias:
+        what: via
+        where: /^fingers_.*|^thumbfan_.*|^controller_(?!(?:controllerCol_controllerRow))|^rotary_(?!(?:rotaryCol_rotaryRow))/
+        params.net: "{{key.led_prev}}"
+        adjust:
+          shift: [4.5, 5.7]
+
+      # LED VCC VIAS
+      led_vcc_vias:
+        what: via
+        where: /^fingers_(?:pinky|ring|middle|index|inner)_top|^thumbfan_.*|^controller_(?!(?:controllerCol_controllerRow))|^rotary_(?!(?:rotaryCol_rotaryRow))/
+        params.net: VCC
+        adjust:
+          shift: [-4.5, 5.7]
+
+      # BATTERY JACK
+      jstph:
+        what: jstph
+        where:
+          ref: fingers_inner_bottom
+          shift: [2.38kx, -0.8ky]
+          rotate: -90
+        params:
+          side: B
+          pos: pos
+          neg: GND
+
+      # RESET BUTTON
+      horizontal_reset:
+        what: EVQPUC
+        params:
+          side: B
+          from: GND
+          to: RST
+        where:
+          ref: fingers_inner_top
+          shift: [1.94kx, -0.8]
+          rotate: -90
+
+      # ON/OFF SWITCH
+      battery_switch:
+        what: slider
+        where:
+          ref: fingers_inner_home
+          shift: [1.91kx, 0]
+          rotate: -90
+        params:
+          side: B
+          from: pos
+          to: RAW
+
+      # ON/OFF SWITCH VIA
+      slider_via:
+        what: via
+        where:
+          ref: fingers_inner_home
+          shift: [1.75kx, 0.5]
+        params:
+          net: RAW
+
+      # ENCODER
+      encoder:
+        what: rotary
+        where:
+          ref: fingers_inner_bottom
+          rotate: 180
+          shift: [2px - 4, -0.15py]
+        params:
+          from: P002 # Push button (S1 - RevXL ref)
+          to: endiode # Push button (S2 RevXL ref)
+          A: P011 # Rotary
+          B: GND
+          C: P100 # Rotary
+
+      # ENCODER Diode
+      encoder_diode:
+        what: diode_tht_sod123
+        where:
+          ref: fingers_inner_bottom
+          shift: [1.4px, -3]
+        params:
+          from: endiode
+          to: P010
+        adjust:
+          rotate: 90
+
+      # ENCODER - Diode Via
+      encoder_via:
+        what: via
+        where:
+          ref: fingers_inner_bottom
+          shift: [1.4px, -6]
+        params:
+          net: P010
+
+      # C2 & C3 Vias for routing to thumbfan connection (avoid crossover with C1)
+      col_two_via:
+        what: via
+        where:
+          ref: fingers_ring_bottom
+          shift: [0.35px, -0.35py]
+        params.net: P106
+
+      col_two_thumb_via:
+        what: via
+        where:
+          ref: thumbfan_center_bottom
+          shift: [-0.15px, -0.35py]
+        params.net: P106
+
+      col_three_via:
+        what: via
+        where:
+          ref: fingers_middle_bottom
+          shift: [0.35px, -0.35py]
+        params.net: P031
+
+      col_three_thumb_via:
+        what: via
+        where:
+          ref: thumbfan_right_bottom
+          shift: [-0.15px, -0.35py]
+        params.net: P031
+
+      # MOUNTING HOLES
+      hole_bottom_right:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [thumbfan_center_top, thumbfan_right_bottom]
+
+      hole_bottom_left:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [fingers_pinky_bottom, fingers_ring_bottom]
+          shift: [0.25kx, -0.45ky]
+
+      hole_top_left:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [fingers_pinky_top, fingers_ring_top]
+
+      hole_top_right:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [fingers_index_top, fingers_inner_home]
+
+      hole_far_right:
+        what: mountinghole
+        where:
+          ref: fingers_inner_bottom
+          shift: [2.6kx, -0.8ky]
+
+      hole_center_bottom:
+        what: mountinghole
+        where:
+          ref: fingers_middle_bottom
+          shift: [0.2kx, -0.7ky]
+
+      hole_center_top:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [fingers_middle_top, fingers_middle_home]
+          shift: [-0.5kx, 0]
+
+      # Nice!View acrylic cover mounting holes
+      display_cover_hole_left:
+        what: mountinghole
+        where:
+          ref: fingers_inner_bottom
+          shift: [0.7kx, -0.2ky]
+
+      display_cover_hole_right:
+        what: mountinghole
+        where:
+          ref: fingers_inner_bottom
+          shift: [1.6kx, -0.58ky]
+
+      display_cover_hole_top_right:
+        what: mountinghole
+        where:
+          ref: fingers_inner_top
+          shift: [1.87kx, 6.7]
+
+      # Write "Bad Wings" on the PCB
+      front_text: &text
+        what: text
+        where: &textWhere
+          ref: fingers_index_bottom
+          shift: [0, -12.3]
+        params: &textParams
+          text: BadWings
+          justify: left
+          style: italic
+          h_size: 3.0
+          v_size: 3.0
+          thickness: 0.4
+
+  badWingsRight:
+    template: kicad8
+    outlines:
+      main:
+        outline: board_right
+    footprints:
+      choc_hotswap:
+        what: choc
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*/
+        params:
+          keycaps: true
+          reverse: false # Top side only
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+        adjust:
+          rotate: 180 # Rotate the key switches upside-down
+
+      # DIODE
+      diode_main:
+        what: diode_tht_sod123
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*/
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [8, 0.8]
+          rotate: 90
+
+      # DIODE VIAS
+      via_main:
+        what: via
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*/
+        params:
+          net: "{{row_net}}"
+        adjust:
+          shift: [6.5, 2.45]
+
+      # CONTROLLER
+      nice_nano:
+        what: nice_nano
+        params:
+          orientation: down
+        where:
+          ref: mirror_fingers_inner_top
+          shift: [21, -9.5]
+          rotate: 90
+
+      nice_view:
+        what: nice_view
+        params:
+          SDA: P017
+          SCL: P020
+          CS: P006
+        where:
+          ref: mirror_fingers_inner_top
+          shift: [21, -30]
+          rotate: -90
+
+      # LEDs
+      per_key_leds:
+        what: led_sk6812mini-e
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*|^mirror_controller_(?!(?:controllerCol_controllerRow))|^mirror_rotary_(?!(?:rotaryCol_rotaryRow))/
+        params:
+          P2: "{{key.led_next}}" #DOUT
+          P4: "{{key.led_prev}}" #DIN
+        adjust:
+          shift: [0, 5]
+          # rotate: 180
+
+      # LED NEXT VIAS
+      led_next_vias:
+        what: via
+        where: /^(?:mirror_fingers_(?!(?:pinky_top))|mirror_thumbfan_.*|mirror_controller_(?!(?:controllerCol_controllerRow))|mirror_rotary_(?!(?:rotaryCol_rotaryRow)))/
+        params.net: "{{key.led_next}}"
+        adjust:
+          shift: [-4.5, 5.7]
+
+      # LED PREV VIAS
+      led_prev_vias:
+        what: via
+        where: /^mirror_fingers_.*|^mirror_thumbfan_.*|^mirror_controller_(?!(?:controllerCol_controllerRow))|^mirror_rotary_(?!(?:rotaryCol_rotaryRow))/
+        params.net: "{{key.led_prev}}"
+        adjust:
+          shift: [4.5, 4.3]
+
+      # LED VCC VIAS
+      led_vcc_vias:
+        what: via
+        where: /^mirror_fingers_(?:pinky|ring|middle|index|inner)_top|^mirror_thumbfan_.*|^mirror_controller_(?!(?:controllerCol_controllerRow))|^mirror_rotary_(?!(?:rotaryCol_rotaryRow))/
+        params.net: VCC
+        adjust:
+          shift: [-4.5, 4.3]
+
+      # BATTERY JACK
+      jstph:
+        what: jstph
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [2.38kx, -0.8ky]
+          rotate: -90
+        params:
+          side: B
+          pos: pos
+          neg: GND
+
+      # RESET BUTTON
+      horizontal_reset:
+        what: EVQPUC
+        params:
+          side: B
+          from: GND
+          to: RST
+        where:
+          ref: mirror_fingers_inner_top
+          shift: [1.94kx, -0.8]
+          rotate: -90
+
+      # ON/OFF SWITCH
+      battery_switch:
+        what: slider
+        where:
+          ref: mirror_fingers_inner_home
+          shift: [1.91kx, 0]
+          rotate: -90
+        params:
+          side: B
+          from: pos
+          to: RAW
+
+      # ON/OFF SWITCH VIA
+      slider_via:
+        what: via
+        where:
+          ref: mirror_fingers_inner_home
+          shift: [1.75kx, -0.5]
+        params:
+          net: RAW
+
+      # ENCODER
+      encoder:
+        what: rotary
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [2px - 4, -0.15py]
+        params:
+          from: P002 # Push button (S1 - RevXL ref)
+          to: endiode # Push button (S2 RevXL ref)
+          A: P011 # Rotary
+          B: GND
+          C: P100 # Rotary
+
+      # ENCODER Diode
+      encoder_diode:
+        what: diode_tht_sod123
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [1.4px, -3]
+        params:
+          from: endiode
+          to: P010
+        adjust:
+          rotate: 90
+
+      # ENCODER - Diode Via
+      encoder_via:
+        what: via
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [1.4px, 0]
+        params:
+          net: P010
+
+      # C2 & C3 Vias for routing to thumbfan connection (avoid crossover with C1)
+      col_two_via:
+        what: via
+        where:
+          ref: mirror_fingers_ring_bottom
+          shift: [0.35px, -0.35py]
+        params.net: P106
+
+      col_two_thumb_via:
+        what: via
+        where:
+          ref: mirror_thumbfan_center_bottom
+          shift: [-0.35px, -0.35py]
+        params.net: P106
+
+      col_three_via:
+        what: via
+        where:
+          ref: mirror_fingers_middle_bottom
+          shift: [0.35px, -0.35py]
+        params.net: P031
+
+      col_three_thumb_via:
+        what: via
+        where:
+          ref: mirror_thumbfan_right_bottom
+          shift: [-0.35px, -0.35py]
+        params.net: P031
+
+      # MOUNTING HOLES
+      hole_bottom_left:
+        what: mountinghole
+        where:
+          ref.aggregate.parts:
+            [mirror_thumbfan_center_top, mirror_thumbfan_right_bottom]
+
+      hole_bottom_right:
+        what: mountinghole
+        where:
+          ref.aggregate.parts:
+            [mirror_fingers_pinky_bottom, mirror_fingers_ring_bottom]
+          shift: [-0.25kx, -0.45ky]
+
+      hole_top_right:
+        what: mountinghole
+        where:
+          ref.aggregate.parts:
+            [mirror_fingers_pinky_top, mirror_fingers_ring_top]
+
+      hole_top_left:
+        what: mountinghole
+        where:
+          ref.aggregate.parts:
+            [mirror_fingers_index_top, mirror_fingers_inner_home]
+
+      hole_far_left:
+        what: mountinghole
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [2.6kx, -0.8ky]
+
+      hole_center_bottom:
+        what: mountinghole
+        where:
+          ref: mirror_fingers_middle_bottom
+          shift: [0.2kx, -0.7ky]
+
+      hole_center_top:
+        what: mountinghole
+        where:
+          ref.aggregate.parts:
+            [mirror_fingers_middle_top, mirror_fingers_middle_home]
+          shift: [0.5kx, 0]
+
+      # Nice!View acrylic cover mounting holes
+      display_cover_hole_right:
+        what: mountinghole
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [0.75kx, -0.2ky]
+
+      display_cover_hole_left:
+        what: mountinghole
+        where:
+          ref: mirror_fingers_inner_bottom
+          shift: [1.6kx, -0.58ky]
+
+      display_cover_hole_top_left:
+        what: mountinghole
+        where:
+          ref: mirror_fingers_inner_top
+          shift: [1.87kx, 6.7]
+      # Write "Bad Wings" on the PCB
+      front_text: &text
+        what: text
+        where: &textWhere
+          ref: mirror_fingers_index_bottom
+          shift: [0, -12.3]
+        params: &textParams
+          text: BadWings
+          justify: right
+          style: italic
+          h_size: 3.0
+          v_size: 3.0
+          thickness: 0.4
+cases:
+  _bottom:
+    - name: board_left
+      extrude: 1.2
