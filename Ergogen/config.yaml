@@ -30,6 +30,25 @@ units:
   # EC11 rotary dimensions
   rotaryW: 11.7
   rotaryH: 12
+  # EC11 rotary knob
+  # Note: This is based on a 10mm high knob
+  rotaryKnobH: 10
+  rotaryKnobInner: 6
+  rotaryKnowOuter: 8
+  rotaryKnobCrossW: 1
+  rotaryKnobCrossL: 6
+  rotaryKnobCrossD: 5
+
+  # Optional: Laptop legs (dimensions are slightly larger than the actual legs to ensure they fit easily into the case
+  # Note: the legRecess is SHORTER than the actual height of the legs to give the keyboard a tenting effect.
+  legW: 14.4
+  legL: 56
+  legRecess: 1
+  legRotation: 23 # Matches the angle of the pinky side of the board
+
+  # Optional: Rubber feet (sticky dots)
+  feetW: 6
+  feetRecess: 0.5
 
 points:
   zones:
@@ -195,15 +214,15 @@ points:
     distance: 6kx
 
 outlines:
-  raw:
+  _raw:
     - what: rectangle
       where: true
       size: [px, py]
-  keys:
+  _keys:
     - what: rectangle
       where: true
       size: [kx - 0.5, ky - 0.5]
-  board_left:
+  _board_left:
     # Here to help trace the outline of the actual keys
     # without this the polygon would have been a total shot in the dark
     # - where: true
@@ -212,7 +231,6 @@ outlines:
     #   size: [kx, ky]
 
     - what: polygon
-
       fillet: 2
       points:
         #FINGERS - top
@@ -234,27 +252,17 @@ outlines:
         #index
         - ref: fingers_index_top
           shift: [-padX / 2, padY]
-        - ref: fingers_index_top
-          shift: [padX, padY]
-        #inner
-        - ref: fingers_inner_top
-          shift: [-padX, padY]
-        - ref: fingers_inner_top
-          shift: [padX, padY]
         #CONTROLLER
         - ref: fingers_inner_top
           shift: [padX * 1.7 + controllerW, padY]
         #ROTARY
         - ref: fingers_inner_bottom
-          shift: [padX * 1.7 + controllerW, padY - 5] # Check that this is vertical
+          shift: [padX * 1.7 + controllerW, padY - 5]
         - ref: rotary_rotaryCol_rotaryRow
           shift: [padX, padY - 1]
         - ref: rotary_rotaryCol_rotaryRow
           shift: [padX, -padY]
         #THUMBS
-        #top
-        - ref: thumbfan_right_top
-          shift: [padX, -padY]
         #bottom
         - ref: thumbfan_right_bottom
           shift: [padX, -padY]
@@ -278,11 +286,11 @@ outlines:
           shift: [-padX, padY]
 
   combo_left:
-    - name: board_left
+    - name: _board_left
     - operation: subtract
-      name: keys
+      name: _keys
 
-  board_right:
+  _board_right:
     # Here to help trace the outline of the actual keys
     # without this the polygon would have been a total shot in the dark
     # - where: true
@@ -313,13 +321,6 @@ outlines:
         #index
         - ref: mirror_fingers_index_top
           shift: [-padX / 2, padY]
-        - ref: mirror_fingers_index_top
-          shift: [padX, padY]
-        #inner
-        - ref: mirror_fingers_inner_top
-          shift: [-padX, padY]
-        - ref: mirror_fingers_inner_top
-          shift: [padX, padY]
         #CONTROLLER
         - ref: mirror_fingers_inner_top
           shift: [padX * 1.7 + controllerW, padY]
@@ -331,9 +332,6 @@ outlines:
         - ref: mirror_rotary_rotaryCol_rotaryRow
           shift: [padX, -padY]
         #THUMBS
-        #top
-        - ref: mirror_thumbfan_right_top
-          shift: [padX, -padY]
         #bottom
         - ref: mirror_thumbfan_right_bottom
           shift: [padX, -padY]
@@ -357,11 +355,448 @@ outlines:
           shift: [-padX, padY]
 
   combo_right:
-    - name: board_right
+    - name: _board_right
     - operation: subtract
-      name: keys
+      name: _keys
 
-  xl_board_left:
+  # CASE RELATED OUTLINES
+  _left_keys:
+    - where: /^fingers_.*|^thumbfan_.*|^controller_(?!(?:controllerCol_controllerRow))|^rotary_(?!(?:rotaryCol_rotaryRow))/
+      what: rectangle
+      size: [14, 14]
+
+  _left_rotary:
+    - where: rotary_rotaryCol_rotaryRow
+      what: rectangle
+      size: [12, 12]
+
+  _left_controller:
+    - where: fingers_inner_top
+      what: rectangle
+      size: [controllerW, controllerH]
+      adjust.shift: [21, -9.5]
+
+  _left_view:
+    - where: fingers_inner_top
+      what: rectangle
+      size: [nice_viewW, nice_viewH]
+      adjust.shift: [21, -16]
+
+  _left_mounting:
+    # bottom-right
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts: [thumbfan_center_top, thumbfan_right_bottom]
+    # bottom-left
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts: [fingers_pinky_bottom, fingers_ring_bottom]
+        shift: [0.25kx, -0.45ky]
+    # top-left
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts: [fingers_pinky_top, fingers_ring_top]
+    # top-right
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts: [fingers_index_top, fingers_inner_home]
+    # far-right
+    - what: circle
+      radius: screwSize
+      where:
+        ref: fingers_inner_bottom
+        shift: [2.6kx, -0.8ky]
+    # center-bottom
+    - what: circle
+      radius: screwSize
+      where:
+        ref: fingers_middle_bottom
+        shift: [0.2kx, -0.7ky]
+    # center-top
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts: [fingers_middle_top, fingers_middle_home]
+        shift: [-0.5kx, 0]
+    # nice!view-top-right
+    - what: circle
+      radius: screwSize
+      where:
+        ref: fingers_inner_top
+        shift: [1.87kx, 6.7]
+
+  _left_view_mounting:
+    # nice!view-left
+    - what: circle
+      radius: screwSize
+      where:
+        ref: fingers_inner_bottom
+        shift: [0.7kx, -0.2ky]
+    # nice!view-right
+    - what: circle
+      radius: screwSize
+      where:
+        ref: fingers_inner_bottom
+        shift: [1.6kx, -0.58ky]
+
+  _left_battery_mount:
+    # Bottom
+    - what: rectangle
+      size: [20, 1]
+      where:
+        ref: fingers_inner_bottom
+        shift: [0.6kx, -16.5]
+    # Left
+    - what: rectangle
+      size: [1, 30]
+      where:
+        ref: fingers_inner_bottom
+        shift: [-6, 1ky]
+    # Right
+    - what: rectangle
+      size: [1, 30]
+      where:
+        ref: fingers_inner_bottom
+        shift: [31.4, 1ky]
+
+  _left_leg_cutouts:
+    - what: rectangle
+      size: [legL, legW]
+      where:
+        ref.aggregate.parts: [fingers_index_top, fingers_index_home]
+        shift: [1, -0.6]
+        rotate: legRotation
+    - what: rectangle
+      size: [legL, legW]
+      where:
+        ref: thumbfan_center_bottom
+        shift: [0.3, 6]
+        rotate: 4
+
+  _left_rubber_feet:
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: fingers_pinky_top
+        shift: [-0.35kx, 0]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: fingers_pinky_home
+        shift: [-0.35kx, 0]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: fingers_pinky_bottom
+        shift: [-0.35kx, 0]
+
+  _left_reset_cutout:
+    - what: rectangle
+      size: [10, 8.2]
+      where:
+        ref: fingers_inner_top
+        shift: [1.94kx, -0.8]
+
+  _left_power_cutout:
+    - what: rectangle
+      size: [10, 10]
+      where:
+        ref: fingers_inner_home
+        shift: [1.91kx, 0]
+
+  _left_standoff:
+    # bottom-right
+    - what: circle
+      radius: standoffSize
+      where:
+        ref.aggregate.parts: [thumbfan_center_top, thumbfan_right_bottom]
+    # bottom-left
+    - what: circle
+      radius: standoffSize
+      where:
+        ref.aggregate.parts: [fingers_pinky_bottom, fingers_ring_bottom]
+        shift: [0.25kx, -0.45ky]
+    # top-left
+    - what: circle
+      radius: standoffSize
+      where:
+        ref.aggregate.parts: [fingers_pinky_top, fingers_ring_top]
+    # top-right
+    - what: circle
+      radius: standoffSize
+      where:
+        ref.aggregate.parts: [fingers_index_top, fingers_inner_home]
+    # far-right
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: fingers_inner_bottom
+        shift: [2.6kx, -0.8ky]
+    # center-bottom
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: fingers_middle_bottom
+        shift: [0.2kx, -0.7ky]
+    # center-top
+    - what: circle
+      radius: standoffSize
+      where:
+        ref.aggregate.parts: [fingers_middle_top, fingers_middle_home]
+        shift: [-0.5kx, 0]
+    # nice!view-top-right
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: fingers_inner_top
+        shift: [1.87kx, 6.7]
+
+  left_cutout:
+    - name: _board_left
+    - operation: subtract
+      name: _left_keys
+    - operation: subtract
+      name: _left_rotary
+    - operation: subtract
+      name: _left_controller
+    - operation: subtract
+      name: _left_view
+
+  _right_keys:
+    - where: /^mirror_fingers_.*|^mirror_thumbfan_.*|^mirror_controller_(?!(?:controllerCol_controllerRow))|^mirror_rotary_(?!(?:rotaryCol_rotaryRow))/
+      what: rectangle
+      size: [14, 14]
+
+  _right_rotary:
+    - where: mirror_rotary_rotaryCol_rotaryRow
+      what: rectangle
+      size: [12, 12]
+
+  _right_controller:
+    - where: mirror_fingers_inner_top
+      what: rectangle
+      size: [controllerW, controllerH]
+      adjust.shift: [21, -9.5]
+
+  _right_view:
+    - where: mirror_fingers_inner_top
+      what: rectangle
+      size: [nice_viewW, nice_viewH]
+      adjust.shift: [21, -16]
+
+  _right_mounting:
+    # bottom-left
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts:
+          [mirror_thumbfan_center_top, mirror_thumbfan_right_bottom]
+    # bottom-right
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts:
+          [mirror_fingers_pinky_bottom, mirror_fingers_ring_bottom]
+        shift: [-0.25kx, -0.45ky]
+    # top-right
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts: [mirror_fingers_pinky_top, mirror_fingers_ring_top]
+    # top-left
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts:
+          [mirror_fingers_index_top, mirror_fingers_inner_home]
+    # far-left
+    - what: circle
+      radius: screwSize
+      where:
+        ref: mirror_fingers_inner_bottom
+        shift: [2.6kx, -0.8ky]
+    # center-bottom
+    - what: circle
+      radius: screwSize
+      where:
+        ref: mirror_fingers_middle_bottom
+        shift: [0.2kx, -0.7ky]
+    # center-top
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts:
+          [mirror_fingers_middle_top, mirror_fingers_middle_home]
+        shift: [0.5kx, 0]
+    # nice!view-top-left
+    - what: circle
+      radius: screwSize
+      where:
+        ref: mirror_fingers_inner_top
+        shift: [1.87kx, 6.7]
+
+  _right_view_mounting:
+    # nice!view-right
+    - what: circle
+      radius: screwSize
+      where:
+        ref: mirror_fingers_inner_bottom
+        shift: [0.75kx, -0.2ky]
+    # nice!view-left
+    - what: circle
+      radius: screwSize
+      where:
+        ref: mirror_fingers_inner_bottom
+        shift: [1.6kx, -0.58ky]
+
+  _right_battery_mount:
+    # Bottom
+    - what: rectangle
+      size: [20, 1]
+      where:
+        ref: mirror_fingers_inner_bottom
+        shift: [0.6kx, -16.5]
+    # Left
+    - what: rectangle
+      size: [1, 30]
+      where:
+        ref: mirror_fingers_inner_bottom
+        shift: [-6, 1ky]
+    # Right
+    - what: rectangle
+      size: [1, 30]
+      where:
+        ref: mirror_fingers_inner_bottom
+        shift: [31.4, 1ky]
+
+  _right_leg_cutouts:
+    - what: rectangle
+      size: [legL, legW]
+      where:
+        ref.aggregate.parts:
+          [mirror_fingers_index_top, mirror_fingers_index_home]
+        shift: [-1, -0.6]
+        rotate: -legRotation
+    - what: rectangle
+      size: [legL, legW]
+      where:
+        ref: mirror_thumbfan_center_bottom
+        shift: [-0.3, 6]
+        rotate: 4
+
+  _right_rubber_feet:
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: mirror_fingers_pinky_top
+        shift: [-0.35kx, 0]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: mirror_fingers_pinky_home
+        shift: [-0.35kx, 0]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: mirror_fingers_pinky_bottom
+        shift: [-0.35kx, 0]
+
+  _right_reset_cutout:
+    - what: rectangle
+      size: [10, 8.2]
+      where:
+        ref: mirror_fingers_inner_top
+        shift: [1.94kx, -0.8]
+
+  _right_power_cutout:
+    - what: rectangle
+      size: [10, 10]
+      where:
+        ref: mirror_fingers_inner_home
+        shift: [1.91kx, 0]
+
+  _right_standoff:
+    # bottom-left
+    - what: circle
+      radius: standoffSize
+      where:
+        ref.aggregate.parts:
+          [mirror_thumbfan_center_top, mirror_thumbfan_right_bottom]
+    # bottom-right
+    - what: circle
+      radius: standoffSize
+      where:
+        ref.aggregate.parts:
+          [mirror_fingers_pinky_bottom, mirror_fingers_ring_bottom]
+        shift: [-0.25kx, -0.45ky]
+    # top-right
+    - what: circle
+      radius: standoffSize
+      where:
+        ref.aggregate.parts: [mirror_fingers_pinky_top, mirror_fingers_ring_top]
+    # top-left
+    - what: circle
+      radius: standoffSize
+      where:
+        ref.aggregate.parts:
+          [mirror_fingers_index_top, mirror_fingers_inner_home]
+    # far-left
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: mirror_fingers_inner_bottom
+        shift: [2.6kx, -0.8ky]
+    # center-bottom
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: mirror_fingers_middle_bottom
+        shift: [0.2kx, -0.7ky]
+    # center-top
+    - what: circle
+      radius: standoffSize
+      where:
+        ref.aggregate.parts:
+          [mirror_fingers_middle_top, mirror_fingers_middle_home]
+        shift: [0.5kx, 0]
+    # nice!view-top-left
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: mirror_fingers_inner_top
+        shift: [1.87kx, 6.7]
+
+  _encoder_outer_wall:
+    - what: circle
+      radius: 9
+      where: fingers_inner_home
+
+  _encoder_inner_wall:
+    - what: circle
+      radius: 7.5
+      where: fingers_inner_home
+
+  _encoder_center_support:
+    - what: rectangle
+      size: [16, 0.9]
+      where: fingers_inner_home
+
+  right_cutout:
+    - name: _board_right
+    - operation: subtract
+      name: _right_keys
+    - operation: subtract
+      name: _right_rotary
+    - operation: subtract
+      name: _right_controller
+    - operation: subtract
+      name: _right_view
+
+  _xl_board_left:
     - what: polygon
       operation: stack
       fillet: 2
@@ -369,14 +804,14 @@ outlines:
         #FINGERS - top
         #pinky
         - ref: fingers_pinky_top
-          shift: [-dpx, padY + caseBorder]
+          shift: [-padX - caseBorder, padY + caseBorder]
         - ref: fingers_pinky_top
-          shift: [padX + caseBorder, padY + caseBorder]
+          shift: [padX - caseBorder, padY + caseBorder]
         #ring
         - ref: fingers_ring_top
           shift: [-padX - caseBorder, padY + caseBorder]
         - ref: fingers_ring_top
-          shift: [padX + caseBorder, padY + caseBorder]
+          shift: [padX - caseBorder, padY + caseBorder]
         #middle
         - ref: fingers_middle_top
           shift: [-padX - caseBorder, padY + caseBorder]
@@ -384,28 +819,18 @@ outlines:
           shift: [padX + caseBorder, padY + caseBorder]
         #index
         - ref: fingers_index_top
-          shift: [(-padX / 2) - caseBorder, padY + caseBorder]
-        - ref: fingers_index_top
-          shift: [padX + caseBorder, padY + caseBorder]
-        #inner
-        - ref: fingers_inner_top
-          shift: [-padX - caseBorder, padY + caseBorder]
-        - ref: fingers_inner_top
-          shift: [padX + caseBorder, padY + caseBorder]
+          shift: [-padX / 2 + caseBorder, padY + caseBorder]
         #CONTROLLER
         - ref: fingers_inner_top
-          shift: [padX * 1.6 + controllerW + caseBorder, padY + caseBorder]
+          shift: [padX * 1.7 + controllerW + caseBorder, padY + caseBorder]
         #ROTARY
+        - ref: fingers_inner_bottom
+          shift: [padX * 1.7 + controllerW + caseBorder, padY - 5 + caseBorder]
         - ref: rotary_rotaryCol_rotaryRow
-          shift: [-padX / 3.2 + caseBorder, padY + caseBorder] # Check that this is vertical
-        - ref: rotary_rotaryCol_rotaryRow
-          shift: [padX + caseBorder, padY + caseBorder]
+          shift: [padX + caseBorder, padY - 1 + caseBorder]
         - ref: rotary_rotaryCol_rotaryRow
           shift: [padX + caseBorder, -padY - caseBorder]
         #THUMBS
-        #top
-        # - ref: thumbfan_right_top
-        #   shift: [padX, -padY]
         #bottom
         - ref: thumbfan_right_bottom
           shift: [padX + caseBorder, -padY - caseBorder]
@@ -426,14 +851,20 @@ outlines:
           shift: [-padX - caseBorder, -padY - caseBorder]
         #Connect back to top
         - ref: fingers_pinky_top
-          shift: [-padX - caseBorder, padY + caseBorder]
+          shift: [-padX - caseBorder, padY - caseBorder]
 
   xl_board_left_key_cutouts:
-    - name: xl_board_left
+    - name: _xl_board_left
     - operation: subtract
-      name: keys
+      name: _left_keys
+    - operation: subtract
+      name: _left_rotary
+    - operation: subtract
+      name: _left_controller
+    - operation: subtract
+      name: _left_view
 
-  xl_board_right:
+  _xl_board_right:
     - what: polygon
       operation: stack
       fillet: 2
@@ -444,74 +875,70 @@ outlines:
         - ref: mirror_fingers_pinky_top
           shift: [-padX - caseBorder, padY + caseBorder]
         - ref: mirror_fingers_pinky_top
-          shift: [padX, padY]
+          shift: [padX - caseBorder, padY + caseBorder]
         #ring
         - ref: mirror_fingers_ring_top
-          shift: [-padX, padY]
+          shift: [-padX - caseBorder, padY + caseBorder]
         - ref: mirror_fingers_ring_top
-          shift: [padX, padY]
+          shift: [padX - caseBorder, padY + caseBorder]
         #middle
         - ref: mirror_fingers_middle_top
-          shift: [-padX, padY]
+          shift: [-padX - caseBorder, padY + caseBorder]
         - ref: mirror_fingers_middle_top
-          shift: [padX, padY]
+          shift: [padX + caseBorder, padY + caseBorder]
         #index
         - ref: mirror_fingers_index_top
-          shift: [-padX / 2, padY]
-        - ref: mirror_fingers_index_top
-          shift: [padX, padY]
-        #inner
-        - ref: mirror_fingers_inner_top
-          shift: [-padX, padY]
-        - ref: mirror_fingers_inner_top
-          shift: [padX, padY]
+          shift: [-padX / 2 + caseBorder, padY + caseBorder]
         #CONTROLLER
         - ref: mirror_fingers_inner_top
-          shift: [padX * 1.6 + controllerW, padY]
+          shift: [padX * 1.7 + controllerW + caseBorder, padY + caseBorder]
         #ROTARY
         - ref: mirror_fingers_inner_bottom
-          shift: [padX * 1.7 + controllerW, padY - 5]
+          shift: [padX * 1.7 + controllerW + caseBorder, padY - 5 + caseBorder]
         - ref: mirror_rotary_rotaryCol_rotaryRow
-          shift: [padX, padY - 1]
+          shift: [padX + caseBorder, padY - 1 + caseBorder]
         - ref: mirror_rotary_rotaryCol_rotaryRow
-          shift: [padX, -padY]
+          shift: [padX + caseBorder, -padY - caseBorder]
         #THUMBS
-        #top
-        - ref: mirror_thumbfan_right_top
-          shift: [padX, -padY]
         #bottom
         - ref: mirror_thumbfan_right_bottom
-          shift: [padX, -padY]
+          shift: [padX + caseBorder, -padY - caseBorder]
         - ref: mirror_thumbfan_right_bottom
-          shift: [-padX, -padY]
+          shift: [-padX - caseBorder, -padY - caseBorder]
         - ref: mirror_thumbfan_center_bottom
-          shift: [-padX, -padY]
+          shift: [-padX - caseBorder, -padY - caseBorder]
         - ref: mirror_thumbfan_left_bottom
-          shift: [-padX, -padY]
+          shift: [-padX - caseBorder, -padY - caseBorder]
         # FINGERS - bottom
         - ref: mirror_fingers_index_bottom
-          shift: [-padX, -padY]
+          shift: [-padX, -padY - caseBorder]
         - ref: mirror_fingers_ring_bottom
-          shift: [padX, -padY]
+          shift: [padX, -padY - caseBorder]
         - ref: mirror_fingers_pinky_bottom
-          shift: [padX, -padY]
+          shift: [padX, -padY - caseBorder]
         - ref: mirror_fingers_pinky_bottom
-          shift: [-padX, -padY]
+          shift: [-padX - caseBorder, -padY - caseBorder]
         #Connect back to first point
         - ref: mirror_fingers_pinky_top
-          shift: [-padX, padY]
+          shift: [-padX - caseBorder, padY + caseBorder]
 
   xl_board_right_key_cutouts:
-    - name: xl_board_right
+    - name: _xl_board_right
     - operation: subtract
-      name: keys
+      name: _right_keys
+    - operation: subtract
+      name: _right_rotary
+    - operation: subtract
+      name: _right_controller
+    - operation: subtract
+      name: _right_view
 
 pcbs:
   badWingsLeft:
     template: kicad8
     outlines:
       main:
-        outline: board_left
+        outline: _board_left
     footprints:
       choc_hotswap:
         what: choc
@@ -788,7 +1215,7 @@ pcbs:
     template: kicad8
     outlines:
       main:
-        outline: board_right
+        outline: _board_right
     footprints:
       choc_hotswap:
         what: choc
@@ -852,7 +1279,6 @@ pcbs:
           P4: "{{key.led_prev}}" #DIN
         adjust:
           shift: [0, 5]
-          # rotate: 180
 
       # LED NEXT VIAS
       led_next_vias:
@@ -1049,6 +1475,7 @@ pcbs:
         where:
           ref: mirror_fingers_inner_top
           shift: [1.87kx, 6.7]
+
       # Write "Bad Wings" on the PCB
       front_text: &text
         what: text
@@ -1063,6 +1490,193 @@ pcbs:
           v_size: 3.0
           thickness: 0.4
 cases:
-  _bottom:
-    - name: board_left
+  _left_base:
+    - name: _xl_board_left
+      extrude: 1.5
+  _left_outerWall:
+    - name: _xl_board_left
+      extrude: 11.9 # 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
+  _left_innerWall:
+    - name: _board_left
+      extrude: 11.9 # 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
+  _left_wall:
+    - what: case
+      name: _left_outerWall
+      operation: add
+    - what: case
+      name: _left_innerWall
+      operation: subtract
+  _left_holes:
+    - name: _left_mounting
+      extrude: 4.5
+  _left_view_holes:
+    - name: _left_view_mounting
+      extrude: 4
+  _left_battery_mounts:
+    - name: _left_battery_mount
+      extrude: 3
+  _left_standoffs:
+    - name: _left_standoff
+      extrude: 4.5
+  _left_legs:
+    - name: _left_leg_cutouts
+      extrude: 1
+  _left_feet:
+    - name: _left_rubber_feet
+      extrude: 0.5
+  _left_rst_hole:
+    - name: _left_reset_cutout
+      extrude: 2
+  _left_pwr_hole:
+    - name: _left_power_cutout
+      extrude: 2
+
+  left_plate:
+    - name: xl_board_left_key_cutouts
       extrude: 1.2
+    - what: case
+      name: _left_holes
+      operation: subtract
+    - what: case
+      name: _left_view_holes
+      operation: subtract
+
+  left_tray:
+    - what: case
+      name: _left_standoffs
+      operation: add
+    - what: case
+      name: _left_holes
+      operation: subtract
+    - what: case
+      name: _left_battery_mounts
+      operation: add
+    - what: case
+      name: _left_base
+      operation: add
+    - what: case
+      name: _left_legs
+      operation: subtract
+    - what: case
+      name: _left_feet
+      operation: subtract
+    - what: case
+      name: _left_wall
+      operation: add
+    - what: case
+      name: _left_rst_hole
+      shift: [0, 0, 8]
+      operation: subtract
+    - what: case
+      name: _left_pwr_hole
+      shift: [0, 0, 8]
+      operation: subtract
+
+  _right_base:
+    - name: _xl_board_right
+      extrude: 1.5
+  _right_outerWall:
+    - name: _xl_board_right
+      extrude: 11.9 # 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
+  _right_innerWall:
+    - name: _board_right
+      extrude: 11.9 # 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
+  _right_wall:
+    - what: case
+      name: _right_outerWall
+      operation: add
+    - what: case
+      name: _right_innerWall
+      operation: subtract
+  _right_holes:
+    - name: _right_mounting
+      extrude: 4.5
+  _right_view_holes:
+    - name: _right_view_mounting
+      extrude: 4
+  _right_battery_mounts:
+    - name: _right_battery_mount
+      extrude: 3
+  _right_standoffs:
+    - name: _right_standoff
+      extrude: 4.5
+  _right_legs:
+    - name: _right_leg_cutouts
+      extrude: 1
+  _right_feet:
+    - name: _right_rubber_feet
+      extrude: 0.5
+  _right_rst_hole:
+    - name: _right_reset_cutout
+      extrude: 2
+  _right_pwr_hole:
+    - name: _right_power_cutout
+      extrude: 2
+
+  right_plate:
+    - name: xl_board_right_key_cutouts
+      extrude: 1.2
+    - what: case
+      name: _right_holes
+      operation: subtract
+    - what: case
+      name: _right_view_holes
+      operation: subtract
+
+  right_tray:
+    - what: case
+      name: _right_standoffs
+      operation: add
+    - what: case
+      name: _right_holes
+      operation: subtract
+    - what: case
+      name: _right_battery_mounts
+      operation: add
+    - what: case
+      name: _right_base
+      operation: add
+    - what: case
+      name: _right_legs
+      operation: subtract
+    - what: case
+      name: _right_feet
+      operation: subtract
+    - what: case
+      name: _right_wall
+      operation: add
+    - what: case
+      name: _right_rst_hole
+      shift: [0, 0, 8]
+      operation: subtract
+    - what: case
+      name: _right_pwr_hole
+      shift: [0, 0, 8]
+      operation: subtract
+
+  _encoder_base:
+    - name: _encoder_outer_wall
+      extrude: 1.5
+  _encoder_outer:
+    - name: _encoder_outer_wall
+      extrude: 11
+  _encoder_inner:
+    - name: _encoder_inner_wall
+      extrude: 11
+  _encoder_support:
+    - name: _encoder_center_support
+      extrude: 5.3
+
+  encoder_knob:
+    - what: case
+      name: _encoder_outer
+      operation: add
+    - what: case
+      name: _encoder_inner
+      operation: subtract
+    - what: case
+      name: _encoder_support
+      operation: add
+    - what: case
+      name: _encoder_base
+      operation: add
