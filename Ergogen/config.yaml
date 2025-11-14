@@ -1495,10 +1495,10 @@ cases:
       extrude: 1.5
   _left_outerWall:
     - name: _xl_board_left
-      extrude: 11.9 # 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
+      extrude: 11.9 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
   _left_innerWall:
     - name: _board_left
-      extrude: 11.9 # 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
+      extrude: 11.9 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
   _left_wall:
     - what: case
       name: _left_outerWall
@@ -1577,10 +1577,10 @@ cases:
       extrude: 1.5
   _right_outerWall:
     - name: _xl_board_right
-      extrude: 11.9 # 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
+      extrude: 11.9 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate)
   _right_innerWall:
     - name: _board_right
-      extrude: 11.9 # 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
+      extrude: 11.9 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate)
   _right_wall:
     - what: case
       name: _right_outerWall
