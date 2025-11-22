@@ -18,8 +18,11 @@ units:
   padY: pushY + 2
 
   caseBorder: 1.5
-  screwSize: 1
-  standoffSize: 2.5
+  baseThickness: 3.5 # Anything above 3.2 will give enough thickness for the laptop legs
+  screwSize: 1.6 # Note: This is used for RADIUS
+  standoffSize: 2.5 # Note: This is used for RADIUS
+  standoffHeight: 3
+  batteryWallHeight: 3.3
 
   # nice!nano dimensions
   controllerW: 18.5
@@ -32,18 +35,20 @@ units:
   rotaryH: 12
   # EC11 rotary knob
   # Note: This is based on a 10mm high knob
-  rotaryKnobH: 10
-  rotaryKnobInner: 6
-  rotaryKnowOuter: 8
-  rotaryKnobCrossW: 1
+  rotaryKnobH: 14.2 # Does not include head
+  rotaryKnobHeadThickness: 1.5
+  rotaryKnobInner: 8.25
+  rotaryKnobOuter: 10.25
+  rotaryKnobCrossW: 1.2
   rotaryKnobCrossL: 6
-  rotaryKnobCrossD: 5
+  rotaryKnobCrossD: 4
+  rotaryKnobShaftRad: 3
 
   # Optional: Laptop legs (dimensions are slightly larger than the actual legs to ensure they fit easily into the case
   # Note: the legRecess is SHORTER than the actual height of the legs to give the keyboard a tenting effect.
   legW: 14.4
   legL: 56
-  legRecess: 1
+  legRecess: 2.7
   legRotation: 23 # Matches the angle of the pinky side of the board
 
   # Optional: Rubber feet (sticky dots)
@@ -446,36 +451,40 @@ outlines:
   _left_battery_mount:
     # Bottom
     - what: rectangle
-      size: [20, 1]
+      size: [20, 2]
       where:
         ref: fingers_inner_bottom
-        shift: [0.6kx, -16.5]
+        shift: [0.6kx, -14.1]
     # Left
     - what: rectangle
-      size: [1, 30]
+      size: [2, 30]
       where:
         ref: fingers_inner_bottom
-        shift: [-6, 1ky]
+        # shift: [-6, 1ky]
+        shift: [-6.5, 1ky]
     # Right
     - what: rectangle
-      size: [1, 30]
+      size: [2, 30]
       where:
         ref: fingers_inner_bottom
-        shift: [31.4, 1ky]
+        # shift: [31.4, 1ky]
+        shift: [31.9, 1ky]
 
-  _left_leg_cutouts:
+  _left_leg_top_cutout:
     - what: rectangle
       size: [legL, legW]
       where:
         ref.aggregate.parts: [fingers_index_top, fingers_index_home]
         shift: [1, -0.6]
         rotate: legRotation
+
+  _left_leg_bottom_cutout:
     - what: rectangle
       size: [legL, legW]
       where:
         ref: thumbfan_center_bottom
-        shift: [0.3, 6]
-        rotate: 4
+        shift: [0.5, 6] # TODO - x value (original 0.2)
+        rotate: 5 # TODO - Dial this in (original: 4)
 
   _left_rubber_feet:
     - what: circle
@@ -493,17 +502,41 @@ outlines:
       where:
         ref: fingers_pinky_bottom
         shift: [-0.35kx, 0]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: fingers_inner_top
+        shift: [1.87kx, 6.7]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: fingers_inner_bottom
+        shift: [2.6kx, 0]
 
   _left_reset_cutout:
     - what: rectangle
-      size: [10, 8.2]
+      size: [10, 5]
+      where:
+        ref: fingers_inner_top
+        shift: [1.94kx, -0.8]
+
+  _left_reset_chamfer:
+    - what: rectangle
+      size: [10, 5]
       where:
         ref: fingers_inner_top
         shift: [1.94kx, -0.8]
 
   _left_power_cutout:
     - what: rectangle
-      size: [10, 10]
+      size: [10, 6]
+      where:
+        ref: fingers_inner_home
+        shift: [1.91kx, 0]
+
+  _left_power_chamfer:
+    - what: rectangle
+      size: [10, 6]
       where:
         ref: fingers_inner_home
         shift: [1.91kx, 0]
@@ -656,24 +689,26 @@ outlines:
   _right_battery_mount:
     # Bottom
     - what: rectangle
-      size: [20, 1]
+      size: [20, 2]
       where:
         ref: mirror_fingers_inner_bottom
-        shift: [0.6kx, -16.5]
+        shift: [0.6kx, -14.1]
     # Left
     - what: rectangle
-      size: [1, 30]
+      size: [2, 30]
       where:
         ref: mirror_fingers_inner_bottom
-        shift: [-6, 1ky]
+        # shift: [-6, 1ky]
+        shift: [-6.5, 1ky]
     # Right
     - what: rectangle
-      size: [1, 30]
+      size: [2, 30]
       where:
         ref: mirror_fingers_inner_bottom
-        shift: [31.4, 1ky]
+        # shift: [31.4, 1ky]
+        shift: [31.9, 1ky]
 
-  _right_leg_cutouts:
+  _right_leg_top_cutout:
     - what: rectangle
       size: [legL, legW]
       where:
@@ -681,12 +716,14 @@ outlines:
           [mirror_fingers_index_top, mirror_fingers_index_home]
         shift: [-1, -0.6]
         rotate: -legRotation
+
+  _right_leg_bottom_cutout:
     - what: rectangle
       size: [legL, legW]
       where:
         ref: mirror_thumbfan_center_bottom
-        shift: [-0.3, 6]
-        rotate: 4
+        shift: [-0.5, 6] # TODO - x value (original -0.2)
+        rotate: 5 # TODO - Dial this in (original: 4)
 
   _right_rubber_feet:
     - what: circle
@@ -704,17 +741,41 @@ outlines:
       where:
         ref: mirror_fingers_pinky_bottom
         shift: [-0.35kx, 0]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: mirror_fingers_inner_top
+        shift: [1.87kx, 6.7]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: mirror_fingers_inner_bottom
+        shift: [2.6kx, 0]
 
   _right_reset_cutout:
     - what: rectangle
-      size: [10, 8.2]
+      size: [10, 5]
+      where:
+        ref: mirror_fingers_inner_top
+        shift: [1.94kx, -0.8]
+
+  _right_reset_chamfer:
+    - what: rectangle
+      size: [10, 5]
       where:
         ref: mirror_fingers_inner_top
         shift: [1.94kx, -0.8]
 
   _right_power_cutout:
     - what: rectangle
-      size: [10, 10]
+      size: [10, 6]
+      where:
+        ref: mirror_fingers_inner_home
+        shift: [1.91kx, 0]
+
+  _right_power_chamfer:
+    - what: rectangle
+      size: [10, 6]
       where:
         ref: mirror_fingers_inner_home
         shift: [1.91kx, 0]
@@ -772,17 +833,22 @@ outlines:
 
   _encoder_outer_wall:
     - what: circle
-      radius: 9
+      radius: rotaryKnobOuter
       where: fingers_inner_home
 
   _encoder_inner_wall:
     - what: circle
-      radius: 7.5
+      radius: rotaryKnobInner
+      where: fingers_inner_home
+
+  _encoder_cross_support:
+    - what: rectangle
+      size: [rotaryKnobInner * 2, rotaryKnobCrossW]
       where: fingers_inner_home
 
   _encoder_center_support:
-    - what: rectangle
-      size: [16, 0.9]
+    - what: circle
+      radius: rotaryKnobShaftRad
       where: fingers_inner_home
 
   right_cutout:
@@ -868,7 +934,6 @@ outlines:
     - what: polygon
       operation: stack
       fillet: 2
-
       points:
         #FINGERS - top
         #pinky
@@ -955,7 +1020,6 @@ pcbs:
       # DIODE
       diode_main:
         what: diode_tht_sod123
-        # what: diode
         where: /^fingers_.*|^thumbfan_.*/
         params:
           from: "{{colrow}}"
@@ -1492,13 +1556,13 @@ pcbs:
 cases:
   _left_base:
     - name: _xl_board_left
-      extrude: 1.5
+      extrude: baseThickness
   _left_outerWall:
     - name: _xl_board_left
-      extrude: 11.9 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
+      extrude: baseThickness + 10.4 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
   _left_innerWall:
     - name: _board_left
-      extrude: 11.9 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
+      extrude: baseThickness + 10.4 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate
   _left_wall:
     - what: case
       name: _left_outerWall
@@ -1508,28 +1572,43 @@ cases:
       operation: subtract
   _left_holes:
     - name: _left_mounting
-      extrude: 4.5
+      # extrude: 4.5
+      extrude: baseThickness + standoffHeight
   _left_view_holes:
     - name: _left_view_mounting
-      extrude: 4
+      # extrude: 4
+      extrude: standoffHeight
   _left_battery_mounts:
     - name: _left_battery_mount
-      extrude: 3
+      extrude: baseThickness + batteryWallHeight
   _left_standoffs:
     - name: _left_standoff
-      extrude: 4.5
-  _left_legs:
-    - name: _left_leg_cutouts
-      extrude: 1
+      # extrude: 4.5
+      extrude: baseThickness + standoffHeight
+  _left_top_leg:
+    - name: _left_leg_top_cutout
+      extrude: legRecess
+  _left_bottom_leg:
+    - name: _left_leg_bottom_cutout
+      extrude: legRecess
   _left_feet:
     - name: _left_rubber_feet
-      extrude: 0.5
+      extrude: feetRecess
   _left_rst_hole:
     - name: _left_reset_cutout
-      extrude: 2
+      extrude: 1.5
+  _left_rst_hole_chamfer:
+    - name: _left_reset_chamfer
+      extrude: 1.5
+      # shift: [0, 0, -1]
+      rotate: [0, 30, 0]
   _left_pwr_hole:
     - name: _left_power_cutout
-      extrude: 2
+      extrude: 1.5
+  _left_pwr_hole_chamfer:
+    - name: _left_power_cutout
+      extrude: 1.5
+      rotate: [0, 30, 0]
 
   left_plate:
     - name: xl_board_left_key_cutouts
@@ -1555,7 +1634,10 @@ cases:
       name: _left_base
       operation: add
     - what: case
-      name: _left_legs
+      name: _left_top_leg
+      operation: subtract
+    - what: case
+      name: _left_bottom_leg
       operation: subtract
     - what: case
       name: _left_feet
@@ -1565,22 +1647,30 @@ cases:
       operation: add
     - what: case
       name: _left_rst_hole
-      shift: [0, 0, 8]
+      shift: [0, 0, baseThickness + 8.8 - (1.5/2)]
+      operation: subtract
+    - what: case
+      name: _left_rst_hole_chamfer
+      shift: [0, 0, baseThickness + 9]
       operation: subtract
     - what: case
       name: _left_pwr_hole
-      shift: [0, 0, 8]
+      shift: [0, 0, baseThickness + 8.8 - (1.5/2)]
+      operation: subtract
+    - what: case
+      name: _left_pwr_hole_chamfer
+      shift: [0, 0, baseThickness + 9]
       operation: subtract
 
   _right_base:
     - name: _xl_board_right
-      extrude: 1.5
+      extrude: baseThickness
   _right_outerWall:
     - name: _xl_board_right
-      extrude: 11.9 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate)
+      extrude: baseThickness + 10.4 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate)
   _right_innerWall:
     - name: _board_right
-      extrude: 11.9 # 1.5 (base) 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate)
+      extrude: baseThickness + 10.4 # 6 (battery height + airgap for hotswap) + 1.7 (hotswap) + 1.6 (pcb) + 1.1 (gap between bottom of switch & switch plate)
   _right_wall:
     - what: case
       name: _right_outerWall
@@ -1590,28 +1680,43 @@ cases:
       operation: subtract
   _right_holes:
     - name: _right_mounting
-      extrude: 4.5
+      # extrude: 4.5
+      extrude: baseThickness + standoffHeight
   _right_view_holes:
     - name: _right_view_mounting
-      extrude: 4
+      # extrude: 4
+      extrude: standoffHeight
   _right_battery_mounts:
     - name: _right_battery_mount
-      extrude: 3
+      # extrude: 3
+      extrude: baseThickness + batteryWallHeight
   _right_standoffs:
     - name: _right_standoff
-      extrude: 4.5
-  _right_legs:
-    - name: _right_leg_cutouts
-      extrude: 1
+      # extrude: 4.5
+      extrude: baseThickness + standoffHeight
+  _right_top_leg:
+    - name: _right_leg_top_cutout
+      extrude: legRecess
+  _right_bottom_leg:
+    - name: _right_leg_bottom_cutout
+      extrude: legRecess
   _right_feet:
     - name: _right_rubber_feet
-      extrude: 0.5
+      extrude: feetRecess
   _right_rst_hole:
     - name: _right_reset_cutout
-      extrude: 2
+      extrude: 1.5
+  _right_rst_hole_chamfer:
+    - name: _right_reset_cutout
+      extrude: 1.5
+      rotate: [0, -30, 0]
   _right_pwr_hole:
     - name: _right_power_cutout
-      extrude: 2
+      extrude: 1.5
+  _right_pwr_hole_chamfer:
+    - name: _right_power_cutout
+      extrude: 1.5
+      rotate: [0, -30, 0]
 
   right_plate:
     - name: xl_board_right_key_cutouts
@@ -1637,7 +1742,10 @@ cases:
       name: _right_base
       operation: add
     - what: case
-      name: _right_legs
+      name: _right_top_leg
+      operation: subtract
+    - what: case
+      name: _right_bottom_leg
       operation: subtract
     - what: case
       name: _right_feet
@@ -1647,25 +1755,39 @@ cases:
       operation: add
     - what: case
       name: _right_rst_hole
-      shift: [0, 0, 8]
+      shift: [0, 0, baseThickness + 8.8 - (1.5/2)]
+      operation: subtract
+    - what: case
+      name: _right_rst_hole_chamfer
+      shift: [0, 0, baseThickness + 9]
       operation: subtract
     - what: case
       name: _right_pwr_hole
-      shift: [0, 0, 8]
+      shift: [0, 0, baseThickness + 8.8 - (1.5/2)]
+      operation: subtract
+    - what: case
+      name: _right_pwr_hole_chamfer
+      shift: [0, 0, baseThickness + 9]
       operation: subtract
 
   _encoder_base:
     - name: _encoder_outer_wall
-      extrude: 1.5
+      extrude: rotaryKnobHeadThickness
   _encoder_outer:
     - name: _encoder_outer_wall
-      extrude: 11
+      extrude: rotaryKnobH + rotaryKnobHeadThickness
   _encoder_inner:
     - name: _encoder_inner_wall
-      extrude: 11
+      extrude: rotaryKnobH + rotaryKnobHeadThickness
   _encoder_support:
+    - name: _encoder_cross_support
+      extrude: rotaryKnobCrossD + rotaryKnobHeadThickness
+  _encoder_shaft_cutout:
     - name: _encoder_center_support
-      extrude: 5.3
+      extrude: rotaryKnobCrossD + rotaryKnobHeadThickness
+  _encoder_shaft_support:
+    - name: _encoder_inner_wall
+      extrude: rotaryKnobCrossD + rotaryKnobHeadThickness
 
   encoder_knob:
     - what: case
@@ -1673,6 +1795,12 @@ cases:
       operation: add
     - what: case
       name: _encoder_inner
+      operation: subtract
+    - what: case
+      name: _encoder_shaft_support
+      operation: add
+    - what: case
+      name: _encoder_shaft_cutout
       operation: subtract
     - what: case
       name: _encoder_support
