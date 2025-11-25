@@ -19,8 +19,8 @@ units:
 
   caseBorder: 1.5
   baseThickness: 3.5 # Anything above 3.2 will give enough thickness for the laptop legs
-  screwSize: 1.6 # Note: This is used for RADIUS
-  standoffSize: 2.5 # Note: This is used for RADIUS
+  screwSize: 1.7 # Note: This is used for RADIUS
+  standoffSize: 2.95 # Note: This is used for RADIUS
   standoffHeight: 3
   batteryWallHeight: 3.3
 
@@ -454,7 +454,7 @@ outlines:
       size: [20, 2]
       where:
         ref: fingers_inner_bottom
-        shift: [0.6kx, -14.1]
+        shift: [0.6kx, -15.1]
     # Left
     - what: rectangle
       size: [2, 30]
@@ -475,7 +475,8 @@ outlines:
       size: [legL, legW]
       where:
         ref.aggregate.parts: [fingers_index_top, fingers_index_home]
-        shift: [1, -0.6]
+        # shift: [1, -0.6]
+        shift: [3, -0.6]
         rotate: legRotation
 
   _left_leg_bottom_cutout:
@@ -483,10 +484,12 @@ outlines:
       size: [legL, legW]
       where:
         ref: thumbfan_center_bottom
-        shift: [0.5, 6] # TODO - x value (original 0.2)
-        rotate: 5 # TODO - Dial this in (original: 4)
+        # shift: [0.5, 6] # TODO - x value (original 0.2)
+        shift: [-3.5, 7] # TODO - x value (original 0.2)
+        rotate: 7 # TODO - Dial this in (original: 4 | 5)
 
   _left_rubber_feet:
+    # Outer
     - what: circle
       radius: feetW / 2
       where:
@@ -502,6 +505,24 @@ outlines:
       where:
         ref: fingers_pinky_bottom
         shift: [-0.35kx, 0]
+    # Top
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: fingers_middle_top
+        shift: [0, 0.4ky]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: fingers_ring_top
+        shift: [-0.5kx, 0.4ky]
+    # Bottom
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: fingers_middle_bottom
+        shift: [-0.2kx, -0.8ky]
+    # Inner
     - what: circle
       radius: feetW / 2
       where:
@@ -512,6 +533,11 @@ outlines:
       where:
         ref: fingers_inner_bottom
         shift: [2.6kx, 0]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: thumbfan_right_bottom
+        shift: [0.3kx, -0.35ky]
 
   _left_reset_cutout:
     - what: rectangle
@@ -583,7 +609,7 @@ outlines:
         shift: [-0.5kx, 0]
     # nice!view-top-right
     - what: circle
-      radius: standoffSize
+      radius: standoffSize - 0.45 # TODO - Force -0.45 because of battery space
       where:
         ref: fingers_inner_top
         shift: [1.87kx, 6.7]
@@ -692,7 +718,7 @@ outlines:
       size: [20, 2]
       where:
         ref: mirror_fingers_inner_bottom
-        shift: [0.6kx, -14.1]
+        shift: [0.6kx, -15.1]
     # Left
     - what: rectangle
       size: [2, 30]
@@ -714,7 +740,8 @@ outlines:
       where:
         ref.aggregate.parts:
           [mirror_fingers_index_top, mirror_fingers_index_home]
-        shift: [-1, -0.6]
+        # shift: [-1, -0.6]
+        shift: [-3, -0.6]
         rotate: -legRotation
 
   _right_leg_bottom_cutout:
@@ -722,10 +749,12 @@ outlines:
       size: [legL, legW]
       where:
         ref: mirror_thumbfan_center_bottom
-        shift: [-0.5, 6] # TODO - x value (original -0.2)
-        rotate: 5 # TODO - Dial this in (original: 4)
+        # shift: [-0.5, 6] # TODO - x value (original -0.2)
+        shift: [-4.5, 7] # TODO - x value (original -0.2)
+        rotate: 7 # TODO - Dial this in (original: 4 | 5)
 
   _right_rubber_feet:
+    # Outer
     - what: circle
       radius: feetW / 2
       where:
@@ -741,6 +770,24 @@ outlines:
       where:
         ref: mirror_fingers_pinky_bottom
         shift: [-0.35kx, 0]
+    # Top
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: mirror_fingers_middle_top
+        shift: [0, 0.4ky]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: mirror_fingers_ring_top
+        shift: [-0.5kx, 0.4ky]
+    # Bottom
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: mirror_fingers_middle_bottom
+        shift: [-0.2kx, -0.8ky]
+    # Inner
     - what: circle
       radius: feetW / 2
       where:
@@ -751,6 +798,11 @@ outlines:
       where:
         ref: mirror_fingers_inner_bottom
         shift: [2.6kx, 0]
+    - what: circle
+      radius: feetW / 2
+      where:
+        ref: mirror_thumbfan_right_bottom
+        shift: [0.3kx, -0.35ky]
 
   _right_reset_cutout:
     - what: rectangle
@@ -826,7 +878,7 @@ outlines:
         shift: [0.5kx, 0]
     # nice!view-top-left
     - what: circle
-      radius: standoffSize
+      radius: standoffSize - 0.45 # TODO - Force -0.45
       where:
         ref: mirror_fingers_inner_top
         shift: [1.87kx, 6.7]
@@ -1596,18 +1648,18 @@ cases:
       extrude: feetRecess
   _left_rst_hole:
     - name: _left_reset_cutout
-      extrude: 1.5
+      extrude: 2.5
   _left_rst_hole_chamfer:
     - name: _left_reset_chamfer
-      extrude: 1.5
+      extrude: 2.5
       # shift: [0, 0, -1]
       rotate: [0, 30, 0]
   _left_pwr_hole:
     - name: _left_power_cutout
-      extrude: 1.5
+      extrude: 2
   _left_pwr_hole_chamfer:
     - name: _left_power_cutout
-      extrude: 1.5
+      extrude: 2
       rotate: [0, 30, 0]
 
   left_plate:
@@ -1647,19 +1699,19 @@ cases:
       operation: add
     - what: case
       name: _left_rst_hole
-      shift: [0, 0, baseThickness + 8.8 - (1.5/2)]
+      shift: [0, 0, baseThickness + 7.8 - (1.5/2)]
       operation: subtract
     - what: case
       name: _left_rst_hole_chamfer
-      shift: [0, 0, baseThickness + 9]
+      shift: [0, 0, baseThickness + 8]
       operation: subtract
     - what: case
       name: _left_pwr_hole
-      shift: [0, 0, baseThickness + 8.8 - (1.5/2)]
+      shift: [0, 0, baseThickness + 8.3 - (1.5/2)]
       operation: subtract
     - what: case
       name: _left_pwr_hole_chamfer
-      shift: [0, 0, baseThickness + 9]
+      shift: [0, 0, baseThickness + 8.5]
       operation: subtract
 
   _right_base:
@@ -1705,17 +1757,17 @@ cases:
       extrude: feetRecess
   _right_rst_hole:
     - name: _right_reset_cutout
-      extrude: 1.5
+      extrude: 2.5
   _right_rst_hole_chamfer:
     - name: _right_reset_cutout
-      extrude: 1.5
+      extrude: 2.5
       rotate: [0, -30, 0]
   _right_pwr_hole:
     - name: _right_power_cutout
-      extrude: 1.5
+      extrude: 2
   _right_pwr_hole_chamfer:
     - name: _right_power_cutout
-      extrude: 1.5
+      extrude: 2
       rotate: [0, -30, 0]
 
   right_plate:
@@ -1755,19 +1807,19 @@ cases:
       operation: add
     - what: case
       name: _right_rst_hole
-      shift: [0, 0, baseThickness + 8.8 - (1.5/2)]
+      shift: [0, 0, baseThickness + 7.8 - (1.5/2)]
       operation: subtract
     - what: case
       name: _right_rst_hole_chamfer
-      shift: [0, 0, baseThickness + 9]
+      shift: [0, 0, baseThickness + 8]
       operation: subtract
     - what: case
       name: _right_pwr_hole
-      shift: [0, 0, baseThickness + 8.8 - (1.5/2)]
+      shift: [0, 0, baseThickness + 8.3 - (1.5/2)]
       operation: subtract
     - what: case
       name: _right_pwr_hole_chamfer
-      shift: [0, 0, baseThickness + 9]
+      shift: [0, 0, baseThickness + 8.5]
       operation: subtract
 
   _encoder_base:
