@@ -1,0 +1,3 @@
+[submodule "zmk-config-badwings"]
+	path = zmk-config-badwings
+	url = https://github.com/CallumABeale/zmk-config-badwings
