@@ -962,7 +962,7 @@ outlines:
         - ref: fingers_index_bottom
           shift: [-padX - caseBorder, -padY - caseBorder]
         - ref: fingers_ring_bottom
-          shift: [padX + caseBorder, -padY - caseBorder]
+          shift: [padX, -padY - caseBorder - 0.4]
         - ref: fingers_pinky_bottom
           shift: [padX + caseBorder, -padY - caseBorder]
         - ref: fingers_pinky_bottom
@@ -1028,11 +1028,11 @@ outlines:
           shift: [-padX - caseBorder, -padY - caseBorder]
         # FINGERS - bottom
         - ref: mirror_fingers_index_bottom
-          shift: [-padX, -padY - caseBorder]
+          shift: [-padX - caseBorder, -padY - caseBorder]
         - ref: mirror_fingers_ring_bottom
-          shift: [padX, -padY - caseBorder]
+          shift: [padX, -padY - caseBorder - 0.4]
         - ref: mirror_fingers_pinky_bottom
-          shift: [padX, -padY - caseBorder]
+          shift: [padX + caseBorder, -padY - caseBorder]
         - ref: mirror_fingers_pinky_bottom
           shift: [-padX - caseBorder, -padY - caseBorder]
         #Connect back to first point
